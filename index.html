@@ -1325,6 +1325,28 @@ if(pin==="0904"){
 document.getElementById("adminPanel")
 .classList.remove("hidden");
 
+document.getElementById("adminButton")
+.classList.remove("hidden");
+
+refreshAdmin();
+
+alert("Admin panel ochildi!");
+
+}else{
+
+alert("PIN kodi noto'g'ri!");
+
+}
+
+}
+
+const pin=document.getElementById("adminPin").value;
+
+if(pin==="0904"){
+
+document.getElementById("adminPanel")
+.classList.remove("hidden");
+
 refreshAdmin();
 
 alert("Admin panel ochildi!");
