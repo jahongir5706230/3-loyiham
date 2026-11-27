@@ -1,249 +1,464 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI TV - Yangiliklar Studiyasi</title>
-    <style>
-        :root {
-            --primary: #1e3a8a;
-            --accent: #ef4444;
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
-        
-        /* Header va Til tugmalari */
-        header {
-            background: linear-gradient(90deg, #0f172a, #1e3a8a);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid var(--accent);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .logo { font-size: 24px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
-        .live-badge { background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 12px; animation: pulse 1.5s infinite; }
-        .lang-buttons button {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .lang-buttons button.active, .lang-buttons button:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global AI News Studio</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #0f172a; color: #f8fafc; padding-bottom: 50px; }
 
-        /* Kategoriya tugmalari */
-        .categories {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 20px 5%;
-            background: #162032;
-            flex-wrap: wrap;
-        }
-        .categories button {
-            background: var(--card);
-            color: var(--text);
-            border: 1px solid #334155;
-            padding: 10px 22px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-        .categories button.active, .categories button:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-        }
+    .topbar {
+      background: #1e293b;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 3px solid #ef4444;
+    }
+    .brand { font-size: 20px; font-weight: bold; }
+    .lang-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+    .lang-btn {
+      padding: 8px 14px;
+      border: 1px solid #64748b;
+      background: #0f172a;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .lang-btn.active { background: #ef4444; border-color: #ef4444; }
 
-        /* TV Studiya ekrani */
-        .studio-container {
-            max-width: 1000px;
-            margin: 25px auto;
-            background: radial-gradient(circle at center, #1e3a8a 0%, #090d16 100%);
-            border: 4px solid #334155;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-        .studio-screen {
-            display: grid;
-            grid-template-columns: 1fr 1.4fr;
-            gap: 20px;
-            padding: 25px;
-            align-items: center;
-        }
-        @media (max-width: 768px) { .studio-screen { grid-template-columns: 1fr; } }
+    .cat-bar {
+      background: #172033;
+      padding: 14px 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      border-bottom: 1px solid #334155;
+    }
+    .cat-btn {
+      padding: 9px 18px;
+      border: 1px solid #3b82f6;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .cat-btn.active { background: #2563eb; color: #fff; }
 
-        /* Boshlovchi qismi */
-        .anchor-box {
-            text-align: center;
-            background: rgba(15, 23, 42, 0.7);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-        }
-        .anchor-avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #3b82f6;
-            transition: 0.3s;
-        }
-        .speaking .anchor-avatar {
-            border-color: var(--accent);
-            box-shadow: 0 0 25px var(--accent);
-            transform: scale(1.03);
-        }
-        .sound-wave {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            height: 20px;
-            margin-top: 10px;
-            opacity: 0;
-        }
-        .speaking .sound-wave { opacity: 1; }
-        .sound-wave span {
-            width: 4px;
-            background: var(--accent);
-            animation: wave 0.6s infinite ease-in-out;
-        }
-        .sound-wave span:nth-child(2) { animation-delay: 0.1s; }
-        .sound-wave span:nth-child(3) { animation-delay: 0.2s; }
-        .sound-wave span:nth-child(4) { animation-delay: 0.3s; }
+    .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
 
-        /* Yangilik rasmi va matni */
-        .news-display img {
-            width: 100%;
-            height: 230px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-        .news-display h2 { font-size: 20px; margin-bottom: 10px; color: #93c5fd; }
-        .news-display p { font-size: 15px; color: #e2e8f0; margin-bottom: 15px; }
-        
-        .controls button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        .controls button.stop-btn { background: #475569; }
+    .studio {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    @media (max-width: 720px) {
+      .studio { grid-template-columns: 1fr; text-align: center; }
+    }
 
-        /* Pastki yuguruvchi satr (Ticker) */
-        .ticker {
-            background: var(--accent);
-            color: white;
-            padding: 8px 15px;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .anchor-card {
+      background: #0f172a;
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #334155;
+    }
+    .anchor-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #3b82f6;
+      margin-bottom: 10px;
+    }
+    .speaking .anchor-img {
+      border-color: #ef4444;
+      box-shadow: 0 0 18px #ef4444;
+    }
+    .status-text { font-size: 13px; color: #94a3b8; margin-top: 4px; }
 
-        /* Yangiliklar ro'yxati */
-        .news-list {
-            max-width: 1000px;
-            margin: 20px auto 50px;
-            padding: 0 15px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .news-card {
-            background: var(--card);
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 1px solid #334155;
-            transition: 0.3s;
-        }
-        .news-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
-        .news-card img { width: 100%; height: 150px; object-fit: cover; }
-        .news-card-body { padding: 15px; }
-        .news-card-body h3 { font-size: 16px; margin-bottom: 8px; }
+    .news-img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #0f172a;
+    }
+    .news-title { font-size: 20px; color: #93c5fd; margin-bottom: 8px; }
+    .news-body { font-size: 15px; color: #e2e8f0; margin-bottom: 14px; line-height: 1.5; }
 
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @keyframes wave { 0%, 100% { height: 5px; } 50% { height: 20px; } }
-    </style>
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .play-btn {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .stop-btn {
+      background: #475569;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .section-heading { font-size: 18px; margin-bottom: 12px; color: #f8fafc; }
+    .news-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .news-item-btn {
+      text-align: left;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 12px;
+      color: #f8fafc;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .news-item-btn:hover, .news-item-btn.selected {
+      border-color: #3b82f6;
+      background: #24344d;
+    }
+    .news-item-btn img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .news-item-title { font-weight: bold; font-size: 15px; }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">📺 GLOBAL AI NEWS <span class="live-badge">LIVE STUDIO</span></div>
-    <div class="lang-buttons">
-        <button onclick="setLanguage('uz')" id="btn-uz" class="active">🇺🇿 O'zbek</button>
-        <button onclick="setLanguage('en')" id="btn-en">🇬🇧 English</button>
-        <button onclick="setLanguage('ru')" id="btn-ru">🇷🇺 Русский</button>
+  <header class="topbar">
+    <div class="brand">📺 AI YANGILIKLAR STUDIYASI</div>
+    <div class="lang-bar">
+      <button type="button" class="lang-btn active" id="lang-uz" onclick="changeLang('uz')">O'zbek</button>
+      <button type="button" class="lang-btn" id="lang-en" onclick="changeLang('en')">English</button>
+      <button type="button" class="lang-btn" id="lang-ru" onclick="changeLang('ru')">Русский</button>
     </div>
-</header>
+  </header>
 
-<div class="categories" id="category-bar"></div>
+  <nav class="cat-bar" id="cat-bar"></nav>
 
-<!-- STUDIYA QISMI -->
-<div class="studio-container">
-    <div class="studio-screen">
-        <div class="anchor-box" id="anchor-box">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Boshlovchi" class="anchor-avatar">
-            <h3 style="margin-top:10px;" id="anchor-name">AI Boshlovchi</h3>
-            <p style="font-size: 12px; color: #94a3b8;" id="studio-status">Efirga tayyor</p>
-            <div class="sound-wave">
-                <span></span><span></span><span></span><span></span>
-            </div>
+  <main class="container">
+    <section class="studio">
+      <div class="anchor-card" id="anchor-card">
+        <img
+          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
+          alt="Boshlovchi"
+          class="anchor-img"
+        />
+        <div id="anchor-name" style="font-weight:bold;">Madina</div>
+        <div class="status-text" id="status-text">Efirga tayyor</div>
+      </div>
+
+      <div>
+        <img id="active-img" class="news-img" src="" alt="Yangilik rasmi" />
+        <h2 class="news-title" id="active-title"></h2>
+        <p class="news-body" id="active-body"></p>
+        <div class="btn-row">
+          <button type="button" class="play-btn" id="play-btn" onclick="readCurrentNews()">🔊 O'qib berish</button>
+          <button type="button" class="stop-btn" id="stop-btn" onclick="stopReading()">⏹ To'xtatish</button>
         </div>
+      </div>
+    </section>
 
-        <div class="news-display">
-            <img id="main-img" src="" alt="Yangilik rasmi">
-            <h2 id="main-title">Yangilik sarlavhasi</h2>
-            <p id="main-text">Yangilik matni shu yerda ko'rinadi...</p>
-            <div class="controls">
-                <button onclick="speakNews()" id="read-btn">🔊 O'qib berish</button>
-                <button onclick="stopSpeech()" class="stop-btn" id="stop-btn">⏹ To'xtatish</button>
-            </div>
-        </div>
-    </div>
-    <div class="ticker">
-        <span>BREAKING NEWS:</span>
-        <marquee id="ticker-text">Xush kelibsiz! Til va bo'limni tanlang, boshlovchi yangiliklarni o'qib beradi.</marquee>
-    </div>
-</div>
+    <h3 class="section-heading" id="list-heading">Bo'limdagi yangiliklar:</h3>
+    <div class="news-selector" id="news-selector"></div>
+  </main>
 
-<!-- QO'SHIMCHA YANGILIKLAR KARTALARI -->
-<div class="news-list" id="news-list"></div>
+  <script>
+    const DATA = {
+      uz: {
+        langCode: "uz-UZ",
+        anchor: "Madina (Studiya boshlovchisi)",
+        ready: "Efirga tayyor",
+        speaking: "🔴 Boshlovchi o'qimoqda...",
+        playLabel: "🔊 O'qib berish",
+        stopLabel: "⏹ To'xtatish",
+        listHeading: "Bo'limdagi yangiliklar (tanlash uchun bosing):",
+        categories: {
+          sport: "Sport",
+          education: "Ta'lim",
+          world: "Dunyo",
+          other: "Boshqa yangiliklar"
+        },
+        news: {
+          sport: [
+            {
+              title: "Terma jamoamiz muhim uchrashuvda g'alaba qozondi",
+              body: "Assalomu alaykum! Sport yangiliklari efirda. Milliy terma jamoamiz keskin bellashuvda g'alabaga erishib, muxlislarni quvontirdi.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+              title: "Yengil atletika bo'yicha yoshlar musobaqasi o'tkazildi",
+              body: "Musobaqada yuzlab yosh sportchilar yugurish va sakrash turlari bo'yicha o'z kuchlarini sinovdan o'tkazdilar.",
+              img: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          education: [
+            {
+              title: "Dasturlash va sun'iy intellekt bo'yicha bepul kurslar boshlandi",
+              body: "Ta'lim yangiliklari: Yoshlar uchun zamonaviy IT ko'nikmalarini o'rgatuvchi yangi o'quv dasturi ishga tushirildi.",
+              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+              title: "Talabalar uchun xalqaro almashinuv dasturi e'lon qilindi",
+              body: "Oliy o'quv yurti talabalari xorijiy universitetlarda bir semestr tahsil olish imkoniyatiga ega bo'ladilar.",
+              img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          world: [
+            {
+              title: "Yashil energiya va iqlim o'zgarishiga bag'ishlangan anjuman",
+              body: "Dunyo yangiliklari: Mutaxassislar quyosh va shamol elektr stansiyalarini ko'paytirish bo'yicha yangi rejalarni muhokama qildilar.",
+              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          other: [
+            {
+              title: "Koinot teleskopi yangi galaktika suratini yubordi",
+              body: "Boshqa yangiliklar: Ilmiy markaz yangi olingan kosmik tasvirlarni jamoatchilikka taqdim etdi.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=700&q=80"
+            }
+          ]
+        }
+      },
+      en: {
+        langCode: "en-US",
+        anchor: "Sarah (Studio Anchor)",
+        ready: "Ready for broadcast",
+        speaking: "🔴 Anchor is reading...",
+        playLabel: "🔊 Read Aloud",
+        stopLabel: "⏹ Stop",
+        listHeading: "News in this category (click a button to read):",
+        categories: {
+          sport: "Sport",
+          education: "Education",
+          world: "World",
+          other: "Other News"
+        },
+        news: {
+          sport: [
+            {
+              title: "National team wins a thrilling match",
+              body: "Welcome to Sport News! Our national squad secured an exciting victory in front of a packed stadium.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          education: [
+            {
+              title: "New AI and coding scholarships for students",
+              body: "In Education news: Universities are expanding grants for students learning artificial intelligence and software engineering.",
+              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          world: [
+            {
+              title: "Global summit focuses on renewable energy",
+              body: "World News: Leaders met to discuss clean energy grids and sustainable global transport.",
+              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          other: [
+            {
+              title: "Space observatory shares deep-space images",
+              body: "Other News: Astronomers released fresh high-resolution images of distant star clusters.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=700&q=80"
+            }
+          ]
+        }
+      },
+      ru: {
+        langCode: "ru-RU",
+        anchor: "Анна (Ведущая студии)",
+        ready: "Готова к эфиру",
+        speaking: "🔴 Ведущая читает...",
+        playLabel: "🔊 Озвучить",
+        stopLabel: "⏹ Стоп",
+        listHeading: "Новости раздела (нажмите на карточку):",
+        categories: {
+          sport: "Спорт",
+          education: "Образование",
+          world: "Мир",
+          other: "Другие новости"
+        },
+        news: {
+          sport: [
+            {
+              title: "Команда одержала победу в важном матче",
+              body: "В эфире новости спорта! Команда уверенно провела встречу и порадовала болельщиков.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          education: [
+            {
+              title: "Запущены новые программы обучения ИИ",
+              body: "Новости образования: Студентам доступны новые курсы по программированию и анализу данных.",
+              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          world: [
+            {
+              title: "Международная встреча по зеленой энергетике",
+              body: "Мировые новости: Участники обсудили развитие возобновляемых источников энергии.",
+              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=80"
+            }
+          ],
+          other: [
+            {
+              title: "Новые снимки далекого космоса",
+              body: "Другие новости: Астрономы опубликовали свежие изображения звездных скоплений.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=700&q=80"
+            }
+          ]
+        }
+      }
+    };
 
-<script>
-    // Yangiliklar bazasi (Shu yerga yangi yangiliklar qo'shishingiz mumkin)
-    const newsData = {
-        uz: {
-            voiceCode: 'uz-UZ',
-            anchor: "Madina (Studia Boshlovchisi)",
-            readBtn: "🔊 Boshlovchi o'qisin",
-            stopBtn: "⏹ To'xtatish",
-            categories: { sport: "⚽ Sport", edu: "🎓 Ta'lim", world: "🌍 Dunyo", other: "💡 Boshqa" },
-            items: {
-                sport: [
-                    {
-                        title: "O'zbekiston terma jamoasi muhim g'alabaga erishdi",
-                        text: "Assalomu alaykum! Sport yangiliklari bilan tan
+    let currentLang = "uz";
+    let currentCat = "sport";
+    let currentIdx = 0;
+
+    function changeLang(lang) {
+      stopReading();
+      currentLang = lang;
+      currentCat = "sport";
+      currentIdx = 0;
+
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById("lang-" + lang).classList.add("active");
+
+      renderCategories();
+      renderNewsList();
+      showNews(0);
+    }
+
+    function renderCategories() {
+      const bar = document.getElementById("cat-bar");
+      bar.innerHTML = "";
+      const cats = DATA[currentLang].categories;
+
+      Object.keys(cats).forEach(key => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cat-btn" + (key === currentCat ? " active" : "");
+        btn.textContent = cats[key];
+        btn.onclick = () => {
+          stopReading();
+          currentCat = key;
+          currentIdx = 0;
+          renderCategories();
+          renderNewsList();
+          showNews(0);
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function renderNewsList() {
+      const box = document.getElementById("news-selector");
+      box.innerHTML = "";
+      const items = DATA[currentLang].news[currentCat] || [];
+
+      items.forEach((item, idx) => {
+        const cardBtn = document.createElement("button");
+        cardBtn.type = "button";
+        cardBtn.className = "news-item-btn" + (idx === currentIdx ? " selected" : "");
+        cardBtn.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" />
+          <span class="news-item-title">${item.title}</span>
+        `;
+        cardBtn.onclick = () => {
+          showNews(idx);
+          readCurrentNews();
+        };
+        box.appendChild(cardBtn);
+      });
+    }
+
+    function showNews(idx) {
+      currentIdx = idx;
+      const langPack = DATA[currentLang];
+      const items = langPack.news[currentCat] || [];
+      const item = items[idx] || { title: "", body: "", img: "" };
+
+      document.getElementById("anchor-name").textContent = langPack.anchor;
+      document.getElementById("status-text").textContent = langPack.ready;
+      document.getElementById("play-btn").textContent = langPack.playLabel;
+      document.getElementById("stop-btn").textContent = langPack.stopLabel;
+      document.getElementById("list-heading").textContent = langPack.listHeading;
+
+      document.getElementById("active-img").src = item.img;
+      document.getElementById("active-title").textContent = item.title;
+      document.getElementById("active-body").textContent = item.body;
+
+      renderNewsList();
+    }
+
+    function readCurrentNews() {
+      stopReading();
+      const langPack = DATA[currentLang];
+      const items = langPack.news[currentCat] || [];
+      const item = items[currentIdx];
+      if (!item || !("speechSynthesis" in window)) return;
+
+      const utter = new SpeechSynthesisUtterance(item.title + ". " + item.body);
+      utter.lang = langPack.langCode;
+
+      const card = document.getElementById("anchor-card");
+      const status = document.getElementById("status-text");
+
+      utter.onstart = () => {
+        card.classList.add("speaking");
+        status.textContent = langPack.speaking;
+      };
+      utter.onend = () => {
+        card.classList.remove("speaking");
+        status.textContent = langPack.ready;
+      };
+      utter.onerror = () => {
+        card.classList.remove("speaking");
+        status.textContent = langPack.ready;
+      };
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    function stopReading() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      document.getElementById("anchor-card").classList.remove("speaking");
+      document.getElementById("status-text").textContent = DATA[currentLang].ready;
+    }
+
+    changeLang("uz");
+  </script>
+</body>
+</html>
