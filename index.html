@@ -3,68 +3,235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yangiliklar Sayti</title>
+  <title>News Portal</title>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; }
-    header { background: #1e293b; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-    .langs, .cats { display: flex; gap: 8px; flex-wrap: wrap; }
-    .cats { background: #172033; padding: 12px 18px; justify-content: center; }
-    button { padding: 8px 13px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: #fff; cursor: pointer; font-weight: bold; }
-    button.active { background: #2563eb; border-color: #2563eb; }
-    .wrap { max-width: 1050px; margin: 20px auto; padding: 0 14px; }
-    .bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-    input { padding: 8px 12px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
-    .card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px; }
-    .meta { font-size: 12px; color: #93c5fd; margin-bottom: 6px; }
-    .tv { background: #172554; padding: 7px 10px; border-radius: 6px; font-size: 12px; margin-bottom: 8px; }
-    .title { font-size: 16px; margin: 0 0 8px; }
-    .text { font-size: 14px; color: #cbd5e1; margin: 0 0 12px; line-height: 1.45; }
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; padding: 14px; }
-    .modal.open { display: flex; }
-    .modal-inner { background: #1e293b; border: 1px solid #475569; border-radius: 10px; max-width: 620px; width: 100%; padding: 18px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+    body { background: #0b1120; color: #f8fafc; padding-bottom: 50px; }
+
+    header {
+      background: #111827;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 2px solid #2563eb;
+    }
+    .brand { font-size: 19px; font-weight: bold; }
+
+    .lang-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+    .lang-btn {
+      padding: 8px 14px;
+      border: 1px solid #374151;
+      background: #1f2937;
+      color: #f9fafb;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .lang-btn.active { background: #2563eb; border-color: #2563eb; }
+
+    .cat-bar {
+      background: #131c2e;
+      padding: 13px 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      border-bottom: 1px solid #23324d;
+    }
+    .cat-btn {
+      padding: 8px 14px;
+      border: 1px solid #3b82f6;
+      background: #0b1324;
+      color: #e2e8f0;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .cat-btn.active { background: #2563eb; color: #fff; }
+
+    .container { max-width: 1160px; margin: 22px auto; padding: 0 16px; }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-title { font-size: 19px; font-weight: bold; }
+    .filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .search-input {
+      background: #111827;
+      color: #f8fafc;
+      border: 1px solid #374151;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      min-width: 210px;
+    }
+    .count-badge { font-size: 13px; color: #94a3b8; }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #26354d;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card img {
+      width: 100%;
+      height: 175px;
+      object-fit: cover;
+      background: #1e293b;
+    }
+    .card-body {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .card-meta { font-size: 12px; color: #60a5fa; font-weight: 600; }
+    .match-box {
+      background: #172554;
+      border: 1px solid #3b82f6;
+      color: #dbeafe;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .card-title { font-size: 17px; line-height: 1.38; color: #f8fafc; }
+    .card-text { font-size: 14px; line-height: 1.55; color: #cbd5e1; flex: 1; }
+    .read-btn {
+      align-self: flex-start;
+      margin-top: 6px;
+      background: #1d4ed8;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .read-btn:hover { background: #2563eb; }
+
+    .reader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .reader-overlay.open { display: flex; }
+    .reader-box {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .reader-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .close-btn {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .reader-img {
+      width: 100%;
+      max-height: 270px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+    .reader-title { font-size: 21px; line-height: 1.35; margin-bottom: 12px; color: #f8fafc; }
+    .reader-full { font-size: 15px; line-height: 1.7; color: #e2e8f0; white-space: pre-line; }
   </style>
 </head>
 <body>
+
   <header>
-    <strong id="site-name">YANGILIKLAR SAYTI</strong>
-    <div class="langs">
-      <button type="button" id="lang-uz" class="active" onclick="setLang('uz')">O'zbek</button>
-      <button type="button" id="lang-en" onclick="setLang('en')">English</button>
-      <button type="button" id="lang-ru" onclick="setLang('ru')">Русский</button>
+    <div class="brand" id="brand">YANGILIKLAR SAYTI</div>
+    <div class="lang-bar">
+      <button type="button" class="lang-btn active" id="l-uz" onclick="setLanguage('uz')">O'zbek</button>
+      <button type="button" class="lang-btn" id="l-en" onclick="setLanguage('en')">English</button>
+      <button type="button" class="lang-btn" id="l-ru" onclick="setLanguage('ru')">Русский</button>
     </div>
   </header>
 
-  <nav class="cats" id="cats"></nav>
+  <nav class="cat-bar" id="cat-bar"></nav>
 
-  <div class="wrap">
-    <div class="bar">
-      <h2 id="cat-heading" style="margin:0;">Sport</h2>
-      <input type="search" id="search" oninput="renderList()" placeholder="Qidirish..." />
-    </div>
-    <div class="grid" id="grid"></div>
-  </div>
-
-  <div class="modal" id="modal" onclick="if(event.target.id==='modal')closeModal()">
-    <div class="modal-inner">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <span class="meta" id="m-src"></span>
-        <button type="button" onclick="closeModal()">X</button>
+  <main class="container">
+    <div class="toolbar">
+      <h2 class="section-title" id="sec-title">Sport</h2>
+      <div class="filter-row">
+        <input type="search" class="search-input" id="search-input" oninput="renderCards()" placeholder="Qidirish..." />
+        <span class="count-badge" id="count-badge"></span>
       </div>
-      <h3 id="m-title" style="margin:0 0 10px;"></h3>
-      <p id="m-full" style="line-height:1.6; color:#e2e8f0; white-space:pre-line;"></p>
+    </div>
+    <div class="news-grid" id="news-grid"></div>
+  </main>
+
+  <div class="reader-overlay" id="reader-overlay" onclick="if(event.target.id==='reader-overlay')closeReader()">
+    <div class="reader-box">
+      <div class="reader-top">
+        <span class="card-meta" id="reader-meta"></span>
+        <button type="button" class="close-btn" id="close-btn" onclick="closeReader()">Yopish</button>
+      </div>
+      <img id="reader-img" class="reader-img" src="" alt="" />
+      <h2 id="reader-title" class="reader-title"></h2>
+      <div id="reader-full" class="reader-full"></div>
     </div>
   </div>
 
   <script>
-    const S = {
+    const IMG_FOOTBALL = "https://stadiumexperience.com/wp-content/uploads/2024/02/Brighton__Hove_Albion_v_AFC_Bournemouth_24SEP23_PH.014-LR.jpg";
+    const IMG_BASKETBALL = "https://upload.wikimedia.org/wikipedia/commons/8/88/Game_3_of_the_2006_NBA_Finals.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original";
+    const IMG_EDU = "https://media.istockphoto.com/id/2122148349/photo/writing-an-exam-at-the-university.jpg?s=612x612&w=0&k=20&c=LgVzLcd_cxNDQrolZFFqg7AIQnTd_xBrvdWfr-eVoK8=";
+    const IMG_WORLD = "https://i.etsystatic.com/6276538/r/il/5ae8ca/269150309/il_1080xN.269150309.jpg";
+
+    const SITE_DATA = {
       uz: {
-        name: "YANGILIKLAR SAYTI",
-        read: "Saytda o'qish",
-        cats: {
+        pageTitle: "Yangiliklar Sayti (O'zbekcha)",
+        brand: "YANGILIKLAR SAYTI",
+        searchPlaceholder: "Yangilik izlash...",
+        readBtn: "Saytda o'qish",
+        closeBtn: "Yopish",
+        countSuffix: "ta natija",
+        timePrefix: "Soat (+05)",
+        channelPrefix: "Kanal",
+        categories: {
           sport: "Sport",
-          times: "O'yinlar vaqti",
-          edu: "Ta'lim",
+          match_times: "O'yinlar vaqti",
+          education: "Ta'lim",
           world: "Dunyo",
           america: "Amerika",
           russia: "Rossiya",
@@ -73,109 +240,59 @@
         },
         items: {
           sport: [
-            { src: "Futbol klublari", title: "Yevropa klublari o'yinlari", text: "Top klublar ichki chempionat va xalqaro bahslarga tayyorlanmoqda.", full: "Yevropa futbol klublari ichki liga va xalqaro turnirlardagi uchrashuvlarga tayyorgarlik ko'rmoqda." },
-            { src: "Basketbol", title: "Basketbol klublari mavsum bahslari", text: "Jamoalar muntazam uchrashuvlarda ochkolar uchun kurashmoqda.", full: "Basketbol klublari konferensiya jadvalidagi o'rinlar uchun ketma-ket o'yinlar o'tkazmoqda." }
+            {
+              tag: "Futbol klublari",
+              title: "Yevropa futbol klublari ichki chempionat va xalqaro turlarga tayyorlanmoqda",
+              text: "Yetakchi klublar taqvimdagi uchrashuvlar, tarkib rotatsiyasi va ochkolar uchun kurash olib bormoqda.",
+              full: "Yevropa futbol klublari ichki chempionat va xalqaro musobaqalardagi uchrashuvlarga tayyorgarlik ko'rmoqda. Murabbiylar tarkib rotatsiyasi, jismoniy tayyorgarlik va o'yin taktikasiga e'tibor qaratmoqda.",
+              img: IMG_FOOTBALL
+            },
+            {
+              tag: "Basketbol",
+              title: "Basketbol klublari mavsumdagi uy va safar bahslarini davom ettirmoqda",
+              text: "Jamoalar konferensiya jadvalidagi o'rinlar uchun bellashmoqda.",
+              full: "Basketbol klublari muntazam mavsumdagi ketma-ket uchrashuvlarda himoya taktikasi, zarbalar aniqligi va zaxira o'yinchilari almashinuvini sinovdan o'tkazmoqda.",
+              img: IMG_BASKETBALL
+            }
           ],
-          times: [
-            { src: "Premyer-liga", time: "2026-11-28, 01:00 (+05)", ch: "Sport TV / Futbol TV jadvalini tekshiring", title: "Nottingham Forest — Chelsea", text: "Boshlanish vaqti: 28-noyabr, 01:00 (+05).", full: "O'yin: Nottingham Forest — Chelsea\nSoat: 2026-11-28, 01:00 (+05)\nKanal: Efir dasturidan tekshiring." },
-            { src: "Premyer-liga", time: "2026-11-28 (+05)", ch: "Sport TV / Futbol TV jadvalini tekshiring", title: "Arsenal — Manchester City", text: "28-noyabr kuni rejalashtirilgan uchrashuv.", full: "O'yin: Arsenal — Manchester City\nSana: 2026-11-28 (+05)\nKanal: Efir dasturidan tekshiring." }
+          match_times: [
+            {
+              tag: "O'yinlar vaqti",
+              time: "2026-11-28, 01:00 (+05)",
+              channel: "Sport TV / Futbol TV jadvalini tekshiring",
+              title: "Nottingham Forest — Chelsea",
+              text: "Uchrashuv Toshkent vaqti bilan 2026-yil 28-noyabr soat 01:00 da boshlanadi.",
+              full: "O'yin: Nottingham Forest — Chelsea\nSoat: 2026-11-28, 01:00 (+05)\nKanal: Sport TV / Futbol TV efir dasturini boshlanishidan oldin tekshiring.",
+              img: IMG_FOOTBALL
+            },
+            {
+              tag: "O'yinlar vaqti",
+              time: "2026-11-28 (+05)",
+              channel: "Sport TV / Futbol TV jadvalini tekshiring",
+              title: "Arsenal — Manchester City va Manchester United — Brentford",
+              text: "28-noyabr kuni rejalashtirilgan uchrashuvlar taqvimi.",
+              full: "28-noyabr kuni rejalashtirilgan uchrashuvlar: Arsenal — Manchester City hamda Manchester United — Brentford. Aniq efir soati va kanalni rasmiy dasturdan tekshiring.",
+              img: IMG_FOOTBALL
+            }
           ],
-          edu: [{ src: "Ta'lim", title: "Universitetlarda o'quv dasturlari", text: "Amaliy va raqamli kurslar kengaytirilmoqda.", full: "Oliy o'quv yurtlarida amaliy mashg'ulotlar va raqamli dasturlar rivojlantirilmoqda." }],
-          world: [{ src: "Dunyo", title: "Xalqaro iqtisodiy va diplomatik uchrashuvlar", text: "Savdo va energetika masalalari muhokama qilinmoqda.", full: "Davlatlar o'rtasida savdo yo'laklari va energetika hamkorligi muhokama etilmoqda." }],
-          america: [{ src: "Amerika", title: "Amerika qit'asi yangiliklari", text: "Texnologiya, iqtisodiyot va infratuzilma yangiliklari.", full: "AQSh va Amerika mintaqasidagi iqtisodiy va texnologik jarayonlar yoritilmoqda." }],
-          russia: [{ src: "Rossiya", title: "Rossiya yangiliklari", text: "Iqtisodiyot, transport va hududiy loyihalar.", full: "Rossiyadagi transport, sanoat va iqtisodiy yangiliklar." }],
-          uzbekistan: [{ src: "O'zbekiston", title: "O'zbekiston yangiliklari", text: "Infratuzilma, ta'lim va raqamli xizmatlar.", full: "O'zbekistonda infratuzilma, iqtisodiyot va ijtimoiy loyihalar amalga oshirilmoqda." }],
-          other: [{ src: "Boshqa", title: "Kosmos va ilm-fan yangiliklari", text: "Rasadxonalar va ilmiy markazlar ma'lumotlari.", full: "Kosmik kuzatuvlar va yangi ilmiy tadqiqotlar natijalari." }]
-        }
-      },
-      en: {
-        name: "NEWS SITE",
-        read: "Read on site",
-        cats: { sport: "Sport", times: "Game Times", edu: "Education", world: "World", america: "America", russia: "Russia", uzbekistan: "Uzbekistan", other: "Other News" },
-        items: {
-          sport: [{ src: "Clubs", title: "European football clubs fixtures", text: "Clubs prepare for league and international games.", full: "European clubs are competing across domestic leagues and continental matches." }],
-          times: [{ src: "Schedule", time: "2026-11-28, 01:00 (+05)", ch: "Check local TV guide", title: "Nottingham Forest — Chelsea", text: "Kickoff: Nov 28, 2026 at 01:00 (+05).", full: "Match: Nottingham Forest — Chelsea\nTime: 2026-11-28, 01:00 (+05)\nChannel: Check broadcast schedule." }],
-          edu: [{ src: "Education", title: "University digital programs", text: "Practical and digital courses expand.", full: "Universities expand digital and practical learning programs." }],
-          world: [{ src: "World", title: "Global trade and diplomacy", text: "International talks on energy and trade.", full: "Global talks cover trade corridors, energy, and diplomacy." }],
-          america: [{ src: "America", title: "Americas news update", text: "Tech, trade, and regional updates.", full: "Key developments across the Americas." }],
-          russia: [{ src: "Russia", title: "Russia news update", text: "Economy, transport, and regional news.", full: "Key updates on economy and transport in Russia." }],
-          uzbekistan: [{ src: "Uzbekistan", title: "Uzbekistan news update", text: "Infrastructure and digital services.", full: "Updates on infrastructure and digital services in Uzbekistan." }],
-          other: [{ src: "Other", title: "Science and space updates", text: "New observatory and research findings.", full: "Recent findings from space and science research." }]
-        }
-      },
-      ru: {
-        name: "НОВОСТНОЙ САЙТ",
-        read: "Читать на сайте",
-        cats: { sport: "Спорт", times: "Время игр", edu: "Образование", world: "Мир", america: "Америка", russia: "Россия", uzbekistan: "Узбекистан", other: "Другие новости" },
-        items: {
-          sport: [{ src: "Клубы", title: "Матчи футбольных клубов", text: "Клубы готовятся к матчам чемпионатов и турниров.", full: "Клубы проводят встречи в чемпионатах и турнирах." }],
-          times: [{ src: "Расписание", time: "2026-11-28, 01:00 (+05)", ch: "Уточняйте по телепрограмме", title: "Ноттингем Форест — Челси", text: "Начало: 28 ноября, 01:00 (+05).", full: "Матч: Ноттингем Форест — Челси\nВремя: 2026-11-28, 01:00 (+05)\nКанал: уточняйте по программе эфира." }],
-          edu: [{ src: "Образование", title: "Образовательные программы", text: "Развитие цифровых курсов и обучения.", full: "Развитие цифровых и практических программ обучения." }],
-          world: [{ src: "Мир", title: "Международные новости", text: "Вопросы торговли, энергетики и сотрудничества.", full: "Международные встречи по вопросам торговли и энергетики." }],
-          america: [{ src: "Америка", title: "Новости Америки", text: "Экономика и технологии региона.", full: "События в сфере технологий и экономики Америки." }],
-          russia: [{ src: "Россия", title: "Новости России", text: "Экономика, транспорт и регионы.", full: "Ключевые события в экономике и транспорте России." }],
-          uzbekistan: [{ src: "Узбекистан", title: "Новости Узбекистана", text: "Инфраструктура и цифровые сервисы.", full: "Новости инфраструктуры и цифровых услуг Узбекистана." }],
-          other: [{ src: "Другое", title: "Наука и космос", text: "Новые данные научных наблюдений.", full: "Новые данные научных и космических исследований." }]
-        }
-      }
-    };
-
-    let lang = "uz", cat = "sport", currentList = [];
-
-    function setLang(l) {
-      lang = l;
-      cat = "sport";
-      document.querySelectorAll(".langs button").forEach(b => b.classList.remove("active"));
-      document.getElementById("lang-" + l).classList.add("active");
-      document.getElementById("site-name").textContent = S[l].name;
-      renderCats();
-      renderList();
-    }
-
-    function renderCats() {
-      const box = document.getElementById("cats");
-      box.innerHTML = "";
-      const cats = S[lang].cats;
-      Object.keys(cats).forEach(k => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.textContent = cats[k];
-        if (k === cat) b.classList.add("active");
-        b.onclick = () => { cat = k; renderCats(); renderList(); };
-        box.appendChild(b);
-      });
-    }
-
-    function renderList() {
-      const pack = S[lang];
-      document.getElementById("cat-heading").textContent = pack.cats[cat];
-      const q = document.getElementById("search").value.trim().toLowerCase();
-      currentList = (pack.items[cat] || []).filter(x => !q || (x.title + " " + x.text + " " + x.full).toLowerCase().includes(q));
-      const grid = document.getElementById("grid");
-      grid.innerHTML = "";
-      currentList.forEach((x, idx) => {
-        const div = document.createElement("div");
-        div.className = "card";
-        const tvHtml = (x.time || x.ch) ? `<div class="tv">${x.time ? "Soat: " + x.time : ""}${x.time && x.ch ? " | " : ""}${x.ch ? "Kanal: " + x.ch : ""}</div>` : "";
-        div.innerHTML = `<div class="meta">${x.src}</div>${tvHtml}<h3 class="title">${x.title}</h3><p class="text">${x.text}</p><button type="button" onclick="openModal(${idx})">${pack.read}</button>`;
-        grid.appendChild(div);
-      });
-    }
-
-    function openModal(idx) {
-      const x = currentList[idx];
-      if (!x) return;
-      document.getElementById("m-src").textContent = x.src;
-      document.getElementById("m-title").textContent = x.title;
-      document.getElementById("m-full").textContent = x.full || x.text;
-      document.getElementById("modal").classList.add("open");
-    }
-
-    function closeModal() {
-      document.getElementById("modal").classList.remove("open");
-    }
-
-    setLang("uz");
-  </script>
-</body>
-</html>
+          education: [
+            {
+              tag: "Ta'lim",
+              title: "Universitetlarda o'quv dasturlari va amaliy mashg'ulotlar kengaymoqda",
+              text: "Talabalar uchun zamonaviy laboratoriyalar, dasturlash va tahlil kurslari rivojlantirilmoqda.",
+              full: "Oliy o'quv yurtlarida amaliy ko'nikmalar, raqamli platformalar va xorijiy tillarni o'qitish dasturlari yangilanmoqda.",
+              img: IMG_EDU
+            }
+          ],
+          world: [
+            {
+              tag: "Dunyo",
+              title: "Xalqaro maydonda savdo yo'laklari va energetika muzokaralari",
+              text: "Davlatlar o'rtasida iqtisodiy hamkorlik, logistika va energetika masalalari muhokama qilinmoqda.",
+              full: "Xalqaro uchrashuvlarda savdo aloqalari, energetika ta'minoti va mintaqaviy hamkorlik loyihalari ko'rib chiqilmoqda.",
+              img: IMG_WORLD
+            }
+          ],
+          america: [
+            {
+              tag: "Amerika
