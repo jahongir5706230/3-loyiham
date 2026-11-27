@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yangiliklar Portali — Barcha bo'limlar</title>
+  <title>Yangiliklar Portali</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
     body { background: #0f172a; color: #f8fafc; padding-bottom: 44px; }
@@ -72,11 +72,10 @@
       display: flex;
       flex-direction: column;
     }
-    .card img {
+    .card-thumb {
       width: 100%;
-      height: 175px;
-      object-fit: cover;
-      background: #0f172a;
+      height: 165px;
+      display: block;
     }
     .card-body {
       padding: 15px;
@@ -145,12 +144,12 @@
       color: #fff;
       cursor: pointer;
     }
-    .modal-img {
+    .modal-art {
       width: 100%;
-      max-height: 260px;
-      object-fit: cover;
+      height: 180px;
       border-radius: 8px;
       margin-bottom: 12px;
+      overflow: hidden;
     }
   </style>
 </head>
@@ -176,21 +175,29 @@
         <span class="meta" id="m-meta"></span>
         <button type="button" class="close-btn" onclick="closeM()">Yopish</button>
       </div>
-      <img id="m-img" class="modal-img" src="" alt="" />
+      <div class="modal-art" id="m-art"></div>
       <h3 id="m-title" style="margin-bottom:10px; font-size:19px;"></h3>
       <p id="m-body" style="line-height:1.65; color:#e2e8f0; white-space:pre-line;"></p>
     </div>
   </div>
 
   <script>
-    const IMG_SPORT = "https://upload.wikimedia.org/wikipedia/commons/1/16/Wembley_Stadium_interior.jpg?utm_source=uz.wikipedia.org&utm_campaign=index&utm_content=original";
-    const IMG_TIMES = "https://stadion.uz/images/news/Sptv2.jpg";
-    const IMG_EDU = "https://tsuull.uz/sites/default/files/photo_2025-10-06_11-54-57.jpg";
-    const IMG_WORLD = "http://kartografiya.uz/wp-content/uploads/2021/04/karta_mira_uzb_flagi-1024x679.jpg";
-    const IMG_AMERICA = "https://gdb.voanews.com/14a577d8-96d7-4c4f-bd71-ddf393420724_tv_w1200_r1.jpg";
-    const IMG_RUSSIA = "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Saint_Basil%27s_Cathedral_and_the_Red_Square.jpg/1280px-Saint_Basil%27s_Cathedral_and_the_Red_Square.jpg?utm_source=uz.wikipedia.org&utm_campaign=index&utm_content=thumbnail";
-    const IMG_UZB = "https://upload.wikimedia.org/wikipedia/commons/1/16/Tashkent_City_Park_at_night_2019.jpg?utm_source=uz.wikipedia.org&utm_campaign=index&utm_content=original";
-    const IMG_OTHER = "https://cdn.uza.uz/2025/08/13/09/38/7jLDue0KL8DUZjV4KdowS1N5R5EVRev0_front.jpg";
+    function artSvg(bg1, bg2, badge, label) {
+      return `<svg class="card-thumb" viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g_${badge.replace(/\W/g,'')}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${bg1}"/>
+            <stop offset="100%" stop-color="${bg2}"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="180" fill="url(#g_${badge.replace(/\W/g,'')})"/>
+        <circle cx="330" cy="40" r="65" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="65" cy="155" r="85" fill="rgba(255,255,255,0.06)"/>
+        <rect x="20" y="20" width="120" height="28" rx="14" fill="rgba(15,23,42,0.55)"/>
+        <text x="80" y="39" text-anchor="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="13" font-weight="bold">${badge}</text>
+        <text x="200" y="108" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="22" font-weight="bold">${label}</text>
+      </svg>`;
+    }
 
     const CATS = {
       sport: "Sport",
@@ -210,14 +217,14 @@
           title: "Yevropa va jahon futbol klublari ketma-ket turlarga tayyorlanmoqda",
           short: "Murabbiylar shtabi tarkib rotatsiyasi, jismoniy tiklanish va hujum-himoya muvozanatiga e'tibor qaratmoqda.",
           full: "Yevropa va jahon futbol klublari ichki chempionatlar hamda xalqaro turnirlardagi zich taqvim sharoitida o'yin o'tkazmoqda. Murabbiylar tarkib rotatsiyasi, jismoniy tiklanish va taktik moslashuv ustida ishlamoqda; har bir turdagi ochkolar turnir jadvalidagi o'rinlarga bevosita ta'sir qiladi.",
-          img: IMG_SPORT
+          art: artSvg("#14532d", "#15803d", "SPORT", "FUTBOL KLUBLARI")
         },
         {
           meta: "Basketbol, tennis va avtosport",
           title: "Basketbol mavsumi, tennis turnirlari va avtosport bosqichlari",
           short: "Jamoalar himoya taktikasi va zarbalar aniqligini sinovdan o'tkazmoqda, tennis va avtosportda esa reyting hamda strategiya muhim.",
           full: "Basketbol klublari muntazam mavsumdagi uy va safar o'yinlarida himoya tizimi va zaxira rotatsiyasini sinovdan o'tkazmoqda. Tennisda reyting ochkolari va rallilardagi chidamlilik, avtosportda esa trassa sharoitiga mos shinalar strategiyasi va tezlik asosiy omil bo'lib qolmoqda.",
-          img: IMG_SPORT
+          art: artSvg("#7c2d12", "#c2410c", "SPORT", "BASKETBOL • TENNIS")
         }
       ],
       times: [
@@ -228,7 +235,7 @@
           title: "Nottingham Forest — Chelsea",
           short: "Uchrashuv Toshkent vaqti bilan 2026-yil 28-noyabr soat 01:00 da rejalashtirilgan.",
           full: "O'yin: Nottingham Forest — Chelsea\nSoat: 2026-11-28, 01:00 (+05)\nKanal: O'zbekistondagi sport telekanallari (Sport TV / Futbol TV) kunlik jadvali o'zgarishi mumkinligi sababli efir dasturini boshlanishidan oldin tekshiring.",
-          img: IMG_TIMES
+          art: artSvg("#1e3a8a", "#2563eb", "EFIR (+05)", "FOREST — CHELSEA")
         },
         {
           meta: "Angliya Premyer-ligasi",
@@ -237,7 +244,7 @@
           title: "Arsenal — Manchester City va Manchester United — Brentford",
           short: "2026-yil 28-noyabr taqvimida belgilangan muhim uchrashuvlar.",
           full: "2026-yil 28-noyabr (+05) taqvimida Arsenal — Manchester City hamda Manchester United — Brentford uchrashuvlari rejalashtirilgan. Aniq boshlanish soati va kanalni rasmiy telekanal dasturidan tekshiring.",
-          img: IMG_TIMES
+          art: artSvg("#172554", "#1d4ed8", "TAQVIM (+05)", "PREMYER-LIGA")
         }
       ],
       edu: [
@@ -246,7 +253,7 @@
           title: "Universitetlarda amaliy mashg'ulotlar va raqamli kurslar kengaymoqda",
           short: "Talabalar uchun zamonaviy laboratoriyalar, dasturlash, tahlil va xorijiy tillar dasturlari yangilanmoqda.",
           full: "Universitetlarda talabalarning amaliy tajribasini oshirish, zamonaviy laboratoriyalar va raqamli o'quv muhitini rivojlantirish ishlari olib borilmoqda. Dasturlash, ma'lumotlar tahlili, muhandislik va xorijiy tillar bo'yicha real amaliy loyihalar kengaytirilmoqda.",
-          img: IMG_EDU
+          art: artSvg("#312e81", "#4f46e5", "TA'LIM", "UNIVERSITETLAR")
         }
       ],
       world: [
@@ -255,7 +262,7 @@
           title: "Savdo yo'laklari, investitsiyalar va energetika muzokaralari",
           short: "Xalqaro maydonda logistika zanjirlari, energetika ta'minoti va diplomatik hamkorlik muhokama qilinmoqda.",
           full: "Xalqaro maydonda savdo yo'laklarini rivojlantirish, investitsiya loyihalari, logistika zanjirlari, energetika xavfsizligi va diplomatik uchrashuvlar yuzasidan muzokaralar olib borilmoqda.",
-          img: IMG_WORLD
+          art: artSvg("#0f766e", "#0d9488", "DUNYO", "XALQARO MAYDON")
         }
       ],
       america: [
@@ -264,7 +271,7 @@
           title: "Texnologiya kompaniyalari, sanoat va savdo aloqalari",
           short: "Shimoliy va Janubiy Amerika davlatlarida texnologiya, sanoat ishlab chiqarishi va shahar infratuzilmasi yoritilmoqda.",
           full: "Amerika qit'asida texnologiya kompaniyalari, sanoat ishlab chiqarishi, savdo aloqalari va shahar infratuzilmasiga oid yangiliklar yoritilmoqda. Innovatsiyalar va sanoat zanjirlari mintaqa iqtisodiyotining asosiy yo'nalishlarini belgilaydi.",
-          img: IMG_AMERICA
+          art: artSvg("#1e40af", "#3b82f6", "AMERIKA", "TEXNOLOGIYA & SAVDO")
         }
       ],
       russia: [
@@ -273,7 +280,7 @@
           title: "Transport yo'laklari, sanoat loyihalari va hududiy rivojlanish",
           short: "Logistika, sanoat ishlab chiqarishi va mintaqaviy iqtisodiy tashabbuslarga oid ma'lumotlar berilmoqda.",
           full: "Rossiyada transport yo'laklari, sanoat loyihalari, logistika va mintaqaviy iqtisodiy rivojlanishga oid ma'lumotlar berilmoqda. Asosiy e'tibor yuk tashish yo'nalishlari, ishlab chiqarish quvvatlari va hududiy loyihalarga qaratilgan.",
-          img: IMG_RUSSIA
+          art: artSvg("#334155", "#64748b", "ROSSIYA", "TRANSPORT & SANOAT")
         }
       ],
       uzbekistan: [
@@ -281,4 +288,10 @@
           meta: "O'zbekiston",
           title: "Infratuzilma, energetika, tadbirkorlik va raqamli xizmatlar",
           short: "Yo'l-transport tizimi, energetika quvvatlari va raqamli davlat xizmatlarini rivojlantirish loyihalari.",
-          full: "O'zbekistonda yo'l-transport infratuzilmasini yangilash, energetika quvvatlarini ko'paytirish, tadb
+          full: "O'zbekistonda yo'l-transport infratuzilmasini yangilash, energetika quvvatlarini ko'paytirish, tadbirkorlikni qo'llab-quvvatlash va raqamli davlat xizmatlarini kengaytirishga qaratilgan loyihalar amalga oshirilmoqda.",
+          art: artSvg("#0369a1", "#0284c7", "O'ZBEKISTON", "RIVOJLANISH & XIZMAT")
+        }
+      ],
+      other: [
+        {
+          meta: "Ilm-fan va
