@@ -65,14 +65,15 @@
     }
     .section-title { font-size: 19px; font-weight: bold; }
     .filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .source-select {
+    .search-input, .source-select {
       background: #111827;
       color: #f8fafc;
       border: 1px solid #374151;
-      padding: 7px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-size: 13px;
     }
+    .search-input { min-width: 210px; }
     .count-badge { font-size: 13px; color: #94a3b8; }
 
     .schedule-wrap {
@@ -149,14 +150,70 @@
     .broadcast-box strong { color: #93c5fd; }
     .card-title { font-size: 17px; line-height: 1.38; color: #f8fafc; }
     .card-text { font-size: 14px; line-height: 1.55; color: #cbd5e1; flex: 1; }
-    .card-link {
-      color: #93c5fd;
-      text-decoration: none;
+    .read-btn {
+      align-self: flex-start;
+      margin-top: 6px;
+      background: #1d4ed8;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
       font-weight: 600;
-      font-size: 14px;
-      margin-top: 4px;
     }
-    .card-link:hover { text-decoration: underline; }
+    .read-btn:hover { background: #2563eb; }
+
+    /* Sayt ichida yangilikni to'liq o'qish oynasi */
+    .reader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.82);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .reader-overlay.open { display: flex; }
+    .reader-box {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .reader-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    .close-btn {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .reader-img {
+      width: 100%;
+      max-height: 290px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+    .reader-title { font-size: 22px; line-height: 1.35; margin-bottom: 12px; color: #f8fafc; }
+    .reader-full { font-size: 15px; line-height: 1.7; color: #e2e8f0; white-space: pre-line; }
   </style>
 </head>
 <body>
@@ -176,6 +233,7 @@
     <div class="toolbar">
       <h2 class="section-title" id="section-title">Sport</h2>
       <div class="filter-row">
+        <input type="search" class="search-input" id="search-input" oninput="renderFilteredCards()" placeholder="Qidirish..." />
         <select class="source-select" id="source-select" onchange="renderFilteredCards()"></select>
         <span class="count-badge" id="count-badge"></span>
       </div>
@@ -188,12 +246,27 @@
     <div class="news-grid" id="news-grid"></div>
   </main>
 
+  <!-- Yangilikni shu saytning o'zida o'qish oynasi -->
+  <div class="reader-overlay" id="reader-overlay" onclick="handleOverlayClick(event)">
+    <div class="reader-box">
+      <div class="reader-top">
+        <span id="reader-meta"></span>
+        <button type="button" class="close-btn" id="close-btn" onclick="closeReader()">Yopish</button>
+      </div>
+      <img id="reader-img" class="reader-img" src="" alt="" />
+      <h2 id="reader-title" class="reader-title"></h2>
+      <div id="reader-full" class="reader-full"></div>
+    </div>
+  </div>
+
   <script>
     const PORTAL = {
       uz: {
         brand: "GLOBAL YANGILIKLAR PORTALI",
         allSources: "Barcha manbalar",
-        readMore: "Manba saytida o'qish ->",
+        searchPlaceholder: "Yangilik izlash...",
+        readBtn: "Saytda o'qish",
+        closeBtn: "Yopish",
         countLabel: "ta ma'lumot",
         timeLabel: "Soat (+05)",
         channelLabel: "Kanal / efir",
@@ -213,476 +286,150 @@
         items: {
           sport: [
             {
-              source: "Sports.ru",
+              source: "Futbol sharhi",
               subtopic: "Futbol klublari",
               title: "Yevropa klublari ichki chempionat va yevrokubok turlariga tayyorlanmoqda",
               text: "Yevropaning yetakchi futbol klublari taqvimdagi uchrashuvlar, tarkib rotatsiyasi va klublar darajasidagi bahslar markazida.",
-              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.sports.ru/football/"
+              fullText: "Yevropa futbol klublari mavsumning tig'iz taqvimi davomida ichki chempionatlar hamda xalqaro turnirlardagi uchrashuvlarga tayyorgarlik ko'rmoqda.\n\nMurabbiylar shtabi futbolchilarning jismoniy holatini saqlash, jarohatlarning oldini olish va zaxira o'yinchilaridan samarali foydalanishga alohida e'tibor qaratmoqda. Har bir turdagi ochkolar turnir jadvalidagi o'rinlarga bevosita ta'sir ko'rsatmoqda.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80"
             },
             {
-              source: "NBA",
+              source: "Basketbol sharhi",
               subtopic: "Basketbol",
               title: "Basketbol ligalarida klublar o'rtasidagi muntazam uchrashuvlar davom etmoqda",
               text: "Jamoalar konferensiya jadvalidagi o'rinlar uchun kurashmoqda; murabbiylar himoya taktikasi va rotatsiyani sinovdan o'tkazmoqda.",
-              img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.nba.com/news"
+              fullText: "Basketbol klublari muntazam mavsum doirasida ketma-ket uy va safar uchrashuvlarini o'tkazmoqda.\n\nJamoalar tez hujumlar, perimetr va uch ochkolik zarbalar aniqligi hamda himoyadagi almashinuvlar ustida ishlamoqda. Mavsum davomidagi har bir g'alaba pley-off bosqichi uchun muhim ahamiyat kasb etadi.",
+              img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80"
             },
             {
-              source: "Formula 1",
+              source: "Avtosport sharhi",
               subtopic: "Avtosport",
               title: "Avtosport jamoalari gran-pri bosqichlarida tezlik va strategiya ustida ishlamoqda",
               text: "Poygachilar va muhandislar trassa sharoitiga mos shinalar taktikasi va saralash natijalari bo'yicha bellashmoqda.",
-              img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.formula1.com/en/latest/all"
+              fullText: "Avtosport jamoalari gran-pri bosqichlarida bolidlarning aerodinamik sozlamalari, shinalarning yeyilish sur'ati va pit-stop strategiyasini sinovdan o'tkazmoqda.\n\nSaralash poygasidagi pozitsiya va asosiy poyga davomidagi harorat o'zgarishlari yakuniy natijani belgilovchi asosiy omillar hisoblanadi.",
+              img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+              source: "Tennis sharhi",
+              subtopic: "Tennis",
+              title: "Xalqaro tennis turnirlarida reyting ochkolari uchun bahslar davom etmoqda",
+              text: "Yakkalik va juftlik bahslarida ishtirok etayotgan tennischilar turli qoplamali kortlarda keyingi bosqich uchun kurashmoqda.",
+              fullText: "Xalqaro tennis turnirlarida ishtirokchilar jahon reytingidagi o'rnini mustahkamlash va sovrinli bosqichlarga chiqish uchun bellashmoqda.\n\nKort qoplamasining tezligi, birinchi uzatish foizi va uzoq davom etadigan rallilardagi chidamlilik o'yin taqdirini hal qilmoqda.",
+              img: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=800&q=80"
             }
           ],
           match_times: [
             {
-              source: "Premier League",
+              source: "Futbol taqvimi",
               subtopic: "Angliya Premyer-ligasi",
               matchName: "Nottingham Forest — Chelsea",
               tvTime: "2026-11-28, 01:00 (+05)",
-              channel: "Efir jadvalini tekshiring",
-              title: "Nottingham Forest — Chelsea uchrashuvi",
-              text: "Premyer-liga taqvimi bo'yicha uchrashuv. Aniq telekanal va efir vaqtini boshlanishidan oldin rasmiy jadvaldan tekshiring.",
-              img: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.premierleague.com/"
+              channel: "Sport TV / Futbol TV efir jadvalini tekshiring",
+              title: "Nottingham Forest — Chelsea uchrashuvi vaqti va efiri",
+              text: "Uchrashuv Toshkent vaqti bilan 2026-yil 28-noyabr kuni soat 01:00 da boshlanadi.",
+              fullText: "Uchrashuv: Nottingham Forest — Chelsea\nBoshlanish vaqti: 2026-11-28, 01:00 (Toshkent vaqti, +05)\nKanal: O'zbekistondagi sport telekanallari (Sport TV / Futbol TV) kunlik efir dasturini boshlanishidan oldin tekshiring.\n\nHar ikki klub ham turnir jadvalidagi o'z maqsadlari yo'lida muhim ochkolar uchun maydonga tushadi.",
+              img: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80"
             },
             {
-              source: "Premier League",
+              source: "Futbol taqvimi",
               subtopic: "Angliya Premyer-ligasi",
               matchName: "Arsenal — Manchester City",
               tvTime: "2026-11-28 (+05)",
-              channel: "Efir jadvalini tekshiring",
-              title: "Arsenal — Manchester City uchrashuvi",
-              text: "28-noyabr kuni rejalashtirilgan uchrashuv. Aniq boshlanish soati va efir kanalini rasmiy manbadan tekshiring.",
-              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.premierleague.com/"
+              channel: "Sport TV / Futbol TV efir jadvalini tekshiring",
+              title: "Arsenal — Manchester City uchrashuvi jadvali",
+              text: "28-noyabr kuni rejalashtirilgan uchrashuv. Aniq boshlanish soati va kanalni efir dasturidan tekshiring.",
+              fullText: "Uchrashuv: Arsenal — Manchester City\nSana: 2026-11-28 (Toshkent vaqti, +05)\nKanal: Rasmiy telekanal efir jadvalini o'yin kuni tekshiring.\n\nUchrashuv yuqori temp va taktik kurashga boy bo'lishi kutilmoqda.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80"
             },
             {
-              source: "Premier League",
+              source: "Futbol taqvimi",
               subtopic: "Angliya Premyer-ligasi",
               matchName: "Manchester United — Brentford",
               tvTime: "2026-11-28 (+05)",
-              channel: "Efir jadvalini tekshiring",
-              title: "Manchester United — Brentford uchrashuvi",
-              text: "28-noyabr kuni rejalashtirilgan uchrashuv. Aniq boshlanish soati va efir kanalini rasmiy manbadan tekshiring.",
-              img: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.premierleague.com/"
+              channel: "Sport TV / Futbol TV efir jadvalini tekshiring",
+              title: "Manchester United — Brentford uchrashuvi jadvali",
+              text: "28-noyabr kuni rejalashtirilgan uchrashuv. Aniq boshlanish soati va kanalni efir dasturidan tekshiring.",
+              fullText: "Uchrashuv: Manchester United — Brentford\nSana: 2026-11-28 (Toshkent vaqti, +05)\nKanal: Rasmiy telekanal efir jadvalini o'yin kuni tekshiring.",
+              img: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80"
             }
           ],
           education: [
             {
-              source: "Gazeta.uz",
+              source: "Ta'lim bo'limi",
               subtopic: "Oliy ta'lim",
               title: "Universitetlarda amaliy va raqamli o'quv dasturlari kengaymoqda",
-              text: "Oliy o'quv yurtlari o'quv rejalari, laboratoriyalar va xalqaro akademik hamkorlikni kengaytirish orqali mutaxassislar tayyorlash sifatini oshirmoqda.",
-              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.gazeta.uz/oz/jamiyat/"
+              text: "Oliy o'quv yurtlari o'quv rejalari, laboratoriyalar va xalqaro hamkorlikni kengaytirish orqali mutaxassislar tayyorlashni kuchaytirmoqda.",
+              fullText: "Oliy ta'lim muassasalarida talabalarning amaliy ko'nikmalarini rivojlantirish, zamonaviy laboratoriyalar yaratish va raqamli platformalardan foydalanish kengaymoqda.\n\nO'quv dasturlarida loyiha ishlari, tahliliy fikrlash va xorijiy tillarni o'rganishga alohida o'rin berilmoqda.",
+              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+              source: "Ta'lim bo'limi",
+              subtopic: "Onlayn ta'lim",
+              title: "Masofaviy kurslar va dasturlash bo'yicha o'quv yo'nalishlari",
+              text: "Talabalar va mustaqil o'rganuvchilar uchun dasturlash, ma'lumotlar tahlili hamda xorijiy tillar bo'yicha yangi o'quv modullari taqdim etilmoqda.",
+              fullText: "Masofaviy o'qitish tizimlari orqali dasturlash asoslari, veb-ishlanmalar, ma'lumotlar tahlili va chet tillarini o'rganish imkoniyatlari kengaymoqda.\n\nAmaliy mashg'ulotlar va mustaqil topshiriqlar bilimni mustahkamlashga yordam beradi.",
+              img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80"
             }
           ],
           world: [
             {
-              source: "Kun.uz",
+              source: "Dunyo bo'limi",
               subtopic: "Xalqaro maydon",
               title: "Jahon iqtisodiyoti, savdo va diplomatik uchrashuvlar",
               text: "Davlatlar o'rtasida savdo yo'laklari, investitsiya loyihalari va xalqaro hamkorlikka oid yangi muzokaralar olib borilmoqda.",
-              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-              url: "https://kun.uz/news/category/jahon"
+              fullText: "Xalqaro maydonda logistika zanjirlarini mustahkamlash, savdo-iqtisodiy aloqalarni kengaytirish va mintaqaviy hamkorlik bo'yicha uchrashuvlar o'tkazilmoqda.\n\nTomonlar infratuzilma va iqtisodiy barqarorlikka oid masalalarni muhokama qilmoqda.",
+              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+              source: "Dunyo bo'limi",
+              subtopic: "Energetika va iqlim",
+              title: "Energetika bozori va iqlim o'zgarishiga qarshi chora-tadbirlar",
+              text: "Energiya resurslari taqsimoti, qayta tiklanuvchi manbalar va ekologik barqarorlik masalalari xalqaro kun tartibida qolmoqda.",
+              fullText: "Energiya samaradorligini oshirish, qayta tiklanuvchi energiya ulushini ko'paytirish va iqlim o'zgarishiga moslashish bo'yicha dasturlar davom etmoqda.\n\nMutaxassislar energiya tizimlarining ishonchliligi va ekologik standartlarni muhokama qilmoqda.",
+              img: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80"
             }
           ],
           america: [
             {
-              source: "Reuters Americas",
+              source: "Amerika bo'limi",
               subtopic: "AQSh va Amerika",
               title: "Shimoliy va Janubiy Amerika iqtisodiyoti, texnologiya va savdo yangiliklari",
-              text: "AQSh va Amerika qit'asi davlatlarida sanoat, texnologiya kompaniyalari, savdo aloqalari va infratuzilma loyihalariga oid asosiy yangiliklar yoritilmoqda.",
-              img: "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.reuters.com/world/americas/"
+              text: "AQSh va Amerika qit'asi davlatlarida sanoat, texnologiya kompaniyalari, savdo aloqalari va infratuzilma loyihalariga oid yangiliklar yoritilmoqda.",
+              fullText: "Amerika qit'asida texnologiya sektori, sanoat ishlab chiqarishi, savdo oqimlari va shahar infratuzilmasini yangilash bo'yicha jarayonlar kuzatilmoqda.\n\nKompaniyalar va ilmiy markazlar yangi yechimlarni joriy etish ustida ishlamoqda.",
+              img: "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=800&q=80"
             }
           ],
           russia: [
             {
-              source: "РИА Новости",
+              source: "Rossiya bo'limi",
               subtopic: "Rossiya",
               title: "Rossiya iqtisodiyoti, transport va mintaqaviy rivojlanish yangiliklari",
-              text: "Sanoat, logistika, ta'lim va xalqaro hamkorlik yo'nalishlaridagi asosiy voqealar hamda rasmiy ma'lumotlar keltirilmoqda.",
-              img: "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=800&q=80",
-              url: "https://ria.ru/"
+              text: "Sanoat, logistika, ta'lim va xalqaro hamkorlik yo'nalishlaridagi asosiy voqealar hamda ma'lumotlar keltirilmoqda.",
+              fullText: "Rossiyada transport yo'laklarini rivojlantirish, sanoat loyihalari, raqamli xizmatlar va hududiy iqtisodiy tashabbuslar bo'yicha yangiliklar kuzatilmoqda.",
+              img: "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=800&q=80"
             }
           ],
           uzbekistan: [
             {
-              source: "Kun.uz",
+              source: "O'zbekiston bo'limi",
               subtopic: "O'zbekiston",
               title: "O'zbekistonda infratuzilma, iqtisodiyot va ijtimoiy loyihalar",
               text: "Mamlakat hududlarida transport, energetika, tadbirkorlik va ijtimoiy sohani rivojlantirishga qaratilgan yangiliklar berilmoqda.",
-              img: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80",
-              url: "https://kun.uz/news/category/uzbekiston"
+              fullText: "O'zbekistonda yo'l-transport infratuzilmasini yaxshilash, energiya quvvatlarini kengaytirish, tadbirkorlikni qo'llab-quvvatlash va raqamli davlat xizmatlarini rivojlantirish ishlari olib borilmoqda.",
+              img: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80"
             }
           ],
           other: [
             {
-              source: "NASA",
+              source: "Boshqa bo'lim",
               subtopic: "Ilm-fan va kosmos",
               title: "Kosmik tadqiqotlar va astronomik kuzatuvlar natijalari",
               text: "Ilmiy markazlar va rasadxonalar sayyoralar, yulduz tizimlari va kosmik apparatlar ishi haqida yangi ma'lumotlar e'lon qilmoqda.",
-              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.nasa.gov/news/"
+              fullText: "Kosmik apparatlar va teleskoplar yordamida olingan yangi kuzatuv ma'lumotlari sayyoralar atmosferasi, yulduzlar evolyutsiyasi va kosmik texnologiyalar rivojini o'rganishga xizmat qilmoqda.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80"
             }
           ]
         }
       },
       en: {
         brand: "GLOBAL NEWS PORTAL",
-        allSources: "All sources",
-        readMore: "Read at source ->",
-        countLabel: "items",
-        timeLabel: "Time (+05)",
-        channelLabel: "Channel / feed",
-        thMatch: "Match",
-        thTime: "Time (+05)",
-        thChannel: "Channel / feed",
-        categories: {
-          sport: "Sport",
-          match_times: "Game Times",
-          education: "Education",
-          world: "World",
-          america: "America",
-          russia: "Russia",
-          uzbekistan: "Uzbekistan",
-          other: "Other News"
-        },
-        items: {
-          sport: [
-            {
-              source: "BBC Sport",
-              subtopic: "Football Clubs",
-              title: "European football clubs push through domestic and continental fixtures",
-              text: "Top clubs across Europe are balancing league points races, squad depth, and midweek international ties.",
-              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.bbc.com/sport/football"
-            }
-          ],
-          match_times: [
-            {
-              source: "Premier League",
-              subtopic: "Premier League",
-              matchName: "Nottingham Forest — Chelsea",
-              tvTime: "2026-11-28, 01:00 (+05)",
-              channel: "Check broadcast listing",
-              title: "Nottingham Forest — Chelsea",
-              text: "Scheduled fixture. Verify local broadcast availability prior to kickoff.",
-              img: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.premierleague.com/"
-            }
-          ],
-          education: [
-            {
-              source: "BBC Education",
-              subtopic: "Higher Education",
-              title: "Universities expand digital skills and interdisciplinary research",
-              text: "Academic institutions are updating degree programs to combine core theory with practical data and tech skills.",
-              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.bbc.com/news/education"
-            }
-          ],
-          world: [
-            {
-              source: "BBC World",
-              subtopic: "World",
-              title: "International talks focus on trade routes, energy security, and diplomacy",
-              text: "Governments and global institutions continue discussions on supply chains, climate goals, and regional stability.",
-              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.bbc.com/news/world"
-            }
-          ],
-          america: [
-            {
-              source: "Reuters Americas",
-              subtopic: "America",
-              title: "Economic, technology, and trade updates across the Americas",
-              text: "Coverage of industrial policy, tech markets, cross-border trade, and regional developments in the Americas.",
-              img: "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.reuters.com/world/americas/"
-            }
-          ],
-          russia: [
-            {
-              source: "Reuters Europe",
-              subtopic: "Russia",
-              title: "Economic, energy, and regional news coverage on Russia",
-              text: "Key developments involving energy markets, trade, and regional affairs.",
-              img: "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.reuters.com/world/europe/"
-            }
-          ],
-          uzbekistan: [
-            {
-              source: "Gazeta.uz",
-              subtopic: "Uzbekistan",
-              title: "Infrastructure, economy, and digital initiatives in Uzbekistan",
-              text: "Updates on transport, energy, education, and public service modernization across Uzbekistan.",
-              img: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.gazeta.uz/en/"
-            }
-          ],
-          other: [
-            {
-              source: "NASA",
-              subtopic: "Science & Space",
-              title: "Space agencies and observatories release new scientific findings",
-              text: "Researchers are sharing fresh data on planetary science, deep-space imaging, and engineering milestones.",
-              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.nasa.gov/news/"
-            }
-          ]
-        }
-      },
-      ru: {
-        brand: "ГЛОБАЛЬНЫЙ НОВОСТНОЙ ПОРТАЛ",
-        allSources: "Все источники",
-        readMore: "Читать на источнике ->",
-        countLabel: "записей",
-        timeLabel: "Время (+05)",
-        channelLabel: "Канал / эфир",
-        thMatch: "Матч",
-        thTime: "Время (+05)",
-        thChannel: "Канал / эфир",
-        categories: {
-          sport: "Спорт",
-          match_times: "Время игр",
-          education: "Образование",
-          world: "Мир",
-          america: "Америка",
-          russia: "Россия",
-          uzbekistan: "Узбекистан",
-          other: "Другие новости"
-        },
-        items: {
-          sport: [
-            {
-              source: "Футбол / Клубы",
-              subtopic: "Клубный футбол",
-              title: "Европейские и мировые клубы проводят матчи чемпионатов и кубков",
-              text: "Клубы ведут борьбу за места в турнирных таблицах, обновляют игровые схемы и готовятся к плотному графику матчей.",
-              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.championat.com/football/"
-            }
-          ],
-          match_times: [
-            {
-              source: "Премьер-лига",
-              subtopic: "АПЛ",
-              matchName: "Ноттингем Форест — Челси",
-              tvTime: "2026-11-28, 01:00 (+05)",
-              channel: "Уточняйте по программе",
-              title: "Ноттингем Форест — Челси",
-              text: "Запланированный матч. Уточняйте канал трансляции перед началом игры.",
-              img: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.premierleague.com/"
-            }
-          ],
-          education: [
-            {
-              source: "РИА Образование",
-              subtopic: "Образование",
-              title: "Развитие образовательных программ и цифровых навыков",
-              text: "Вузы и образовательные платформы расширяют курсы по технологиям, аналитике и прикладным специальностям.",
-              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-              url: "https://ria.ru/society/"
-            }
-          ],
-          world: [
-            {
-              source: "РИА Мир",
-              subtopic: "Мир",
-              title: "Международная повестка, торговля и энергетические проекты",
-              text: "Страны обсуждают логистику, энергобаланс, климат и развитие двустороннего сотрудничества.",
-              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-              url: "https://ria.ru/world/"
-            }
-          ],
-          america: [
-            {
-              source: "РИА Мир",
-              subtopic: "Америка",
-              title: "Экономические и технологические новости стран Америки",
-              text: "Обзор событий в сфере технологий, промышленности и международных связей в регионе.",
-              img: "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=800&q=80",
-              url: "https://ria.ru/world/"
-            }
-          ],
-          russia: [
-            {
-              source: "РИА Новости",
-              subtopic: "Россия",
-              title: "Новости экономики, инфраструктуры и регионов России",
-              text: "Ключевые события, проекты развития и официальные сообщения.",
-              img: "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=800&q=80",
-              url: "https://ria.ru/"
-            }
-          ],
-          uzbekistan: [
-            {
-              source: "Gazeta.uz",
-              subtopic: "Узбекистан",
-              title: "Развитие инфраструктуры, экономики и цифровых услуг в Узбекистане",
-              text: "Новости о транспорте, энергетике, образовании и цифровых проектах в стране.",
-              img: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.gazeta.uz/ru/"
-            }
-          ],
-          other: [
-            {
-              source: "РИА Наука",
-              subtopic: "Наука и космос",
-              title: "Новые данные научных исследований и космических наблюдений",
-              text: "Ученые публикуют результаты наблюдений за космосом, новых материалов и технологических разработок.",
-              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
-              url: "https://ria.ru/science/"
-            }
-          ]
-        }
-      }
-    };
-
-    let currentLang = "uz";
-    let currentCat = "sport";
-    let currentStories = [];
-
-    function setLang(lang) {
-      currentLang = lang;
-      currentCat = "sport";
-
-      document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
-      document.getElementById("l-" + lang).classList.add("active");
-      document.getElementById("brand-name").textContent = PORTAL[lang].brand;
-
-      renderCategories();
-      loadCategoryStories();
-    }
-
-    function renderCategories() {
-      const bar = document.getElementById("cat-bar");
-      bar.innerHTML = "";
-      const cats = PORTAL[currentLang].categories;
-
-      Object.keys(cats).forEach(key => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "cat-btn" + (key === currentCat ? " active" : "");
-        btn.textContent = cats[key];
-        btn.onclick = () => {
-          currentCat = key;
-          renderCategories();
-          loadCategoryStories();
-        };
-        bar.appendChild(btn);
-      });
-    }
-
-    function loadCategoryStories() {
-      const pack = PORTAL[currentLang];
-      document.getElementById("section-title").textContent = pack.categories[currentCat];
-      currentStories = [...(pack.items[currentCat] || [])];
-      populateSourceFilter();
-      renderFilteredCards();
-    }
-
-    function populateSourceFilter() {
-      const select = document.getElementById("source-select");
-      const pack = PORTAL[currentLang];
-      const sources = [...new Set(currentStories.map(item => item.source))];
-
-      select.innerHTML = "";
-      const allOpt = document.createElement("option");
-      allOpt.value = "ALL";
-      allOpt.textContent = pack.allSources;
-      select.appendChild(allOpt);
-
-      sources.forEach(src => {
-        const opt = document.createElement("option");
-        opt.value = src;
-        opt.textContent = src;
-        select.appendChild(opt);
-      });
-    }
-
-    function renderScheduleTable(filtered) {
-      const pack = PORTAL[currentLang];
-      const wrap = document.getElementById("schedule-wrap");
-      const table = document.getElementById("schedule-table");
-
-      if (currentCat !== "match_times" || filtered.length === 0) {
-        wrap.style.display = "none";
-        table.innerHTML = "";
-        return;
-      }
-
-      wrap.style.display = "block";
-      const rows = filtered.map(item => `
-        <tr>
-          <td>${item.matchName || item.title}</td>
-          <td>${item.tvTime || "-"}</td>
-          <td>${item.channel || "-"}</td>
-        </tr>
-      `).join("");
-
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>${pack.thMatch}</th>
-            <th>${pack.thTime}</th>
-            <th>${pack.thChannel}</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      `;
-    }
-
-    function renderFilteredCards() {
-      const pack = PORTAL[currentLang];
-      const selectedSource = document.getElementById("source-select").value;
-      const filtered = selectedSource === "ALL"
-        ? currentStories
-        : currentStories.filter(item => item.source === selectedSource);
-
-      document.getElementById("count-badge").textContent = `${filtered.length} ${pack.countLabel}`;
-      renderScheduleTable(filtered);
-
-      const grid = document.getElementById("news-grid");
-      grid.innerHTML = "";
-
-      filtered.forEach(item => {
-        const card = document.createElement("article");
-        card.className = "card";
-        const broadcastHtml = (item.tvTime || item.channel)
-          ? `<div class="broadcast-box">
-               ${item.tvTime ? `<div><strong>${pack.timeLabel}:</strong> ${item.tvTime}</div>` : ""}
-               ${item.channel ? `<div><strong>${pack.channelLabel}:</strong> ${item.channel}</div>` : ""}
-             </div>`
-          : "";
-
-        card.innerHTML = `
-          <img src="${item.img}" alt="${item.title}" />
-          <div class="card-body">
-            <div class="card-top">
-              <span>${item.source}</span>
-              <span class="topic-tag">${item.subtopic || ""}</span>
-            </div>
-            ${broadcastHtml}
-            <h3 class="card-title">${item.title}</h3>
-            <p class="card-text">${item.text}</p>
-            <a class="card-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${pack.readMore}</a>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    setLang("uz");
-  </script>
-</body>
-</html>
