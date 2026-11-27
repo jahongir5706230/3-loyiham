@@ -3,454 +3,396 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Studiya — Yangiliklar</title>
+  <title>Yangiliklar Portali</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-    body { background: #070c16; color: #f8fafc; padding-bottom: 45px; }
+    body { background: #0f172a; color: #f8fafc; padding-bottom: 50px; }
 
     header {
-      background: #0f172a;
-      padding: 14px 20px;
+      background: #1e293b;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      border-bottom: 3px solid #ef4444;
+      gap: 12px;
+      border-bottom: 2px solid #334155;
     }
-    .brand { font-size: 20px; font-weight: bold; }
-    .lang-btns { display: flex; gap: 8px; }
+    .site-title { font-size: 20px; font-weight: bold; }
+
+    .lang-bar { display: flex; gap: 8px; flex-wrap: wrap; }
     .lang-btn {
-      padding: 7px 14px;
-      border: 1px solid #334155;
-      background: #1e293b;
-      color: #fff;
+      padding: 8px 14px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #f8fafc;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
     }
-    .lang-btn.active { background: #ef4444; border-color: #ef4444; }
+    .lang-btn.active { background: #2563eb; border-color: #2563eb; }
 
-    .cat-nav {
-      background: #111c32;
-      padding: 12px 20px;
+    .cat-bar {
+      background: #172033;
+      padding: 14px 20px;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
-      border-bottom: 1px solid #243656;
+      border-bottom: 1px solid #2b3a55;
     }
     .cat-btn {
-      padding: 8px 16px;
+      padding: 9px 18px;
       border: 1px solid #3b82f6;
-      background: #0b1324;
+      background: #0f172a;
       color: #e2e8f0;
       border-radius: 20px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 600;
     }
-    .cat-btn.active { background: #2563eb; color: #fff; }
+    .cat-btn.active { background: #2563eb; color: #ffffff; }
 
-    .wrap { max-width: 1080px; margin: 20px auto; padding: 0 15px; }
-
-    .studio-grid {
-      background: #0f172a;
-      border: 1px solid #26354d;
-      border-radius: 12px;
-      padding: 18px;
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 20px;
-      align-items: start;
-      margin-bottom: 24px;
-    }
-    @media (max-width: 860px) {
-      .studio-grid { grid-template-columns: 1fr; }
-    }
-
-    .video-box {
-      background: #020617;
-      border: 2px solid #1e293b;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .video-header {
-      background: #1e293b;
-      padding: 8px 12px;
+    .container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .section-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      font-weight: bold;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
     }
-    .live-pill {
-      background: #ef4444;
-      color: #fff;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-    video.anchor-video {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      display: block;
-      background: #000;
-    }
-    .fallback-img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      display: none;
-    }
+    .section-title { font-size: 18px; font-weight: bold; }
+    .source-info { font-size: 13px; color: #94a3b8; }
 
-    .news-details img.story-photo {
-      width: 100%;
-      max-height: 210px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      border: 1px solid #1e293b;
-    }
-    .news-title { font-size: 21px; color: #93c5fd; margin-bottom: 8px; }
-    .news-desc { font-size: 15px; line-height: 1.6; color: #e2e8f0; margin-bottom: 14px; }
-    .note-box {
-      background: #131f38;
-      border-left: 3px solid #38bdf8;
-      padding: 10px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #cbd5e1;
-    }
-
-    .list-title { font-size: 17px; margin-bottom: 12px; }
-    .cards {
+    .news-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
     }
-    .card-btn {
-      background: #0f172a;
-      border: 1px solid #26354d;
-      border-radius: 10px;
-      padding: 12px;
-      color: #f8fafc;
-      text-align: left;
-      cursor: pointer;
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 8px;
     }
-    .card-btn:hover, .card-btn.selected {
-      border-color: #3b82f6;
-      background: #16233d;
-    }
-    .card-btn img {
+    .card img {
       width: 100%;
-      height: 125px;
+      height: 180px;
       object-fit: cover;
-      border-radius: 7px;
+      background: #0f172a;
     }
-    .card-title { font-weight: bold; font-size: 14px; }
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .card-meta {
+      font-size: 12px;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    .card-title { font-size: 17px; color: #f8fafc; line-height: 1.4; }
+    .card-text { font-size: 14px; color: #cbd5e1; line-height: 1.55; flex: 1; }
+    .card-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .card-link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="brand">🎬 VIDEO STUDIYA YANGILIKLARI</div>
-    <div class="lang-btns">
-      <button type="button" class="lang-btn active" id="l-uz" onclick="changeLang('uz')">O'zbek</button>
-      <button type="button" class="lang-btn" id="l-en" onclick="changeLang('en')">English</button>
-      <button type="button" class="lang-btn" id="l-ru" onclick="changeLang('ru')">Русский</button>
+    <div class="site-title" id="site-title">YANGILIKLAR PORTALI</div>
+    <div class="lang-bar">
+      <button type="button" class="lang-btn active" id="btn-uz" onclick="setLang('uz')">O'zbek</button>
+      <button type="button" class="lang-btn" id="btn-en" onclick="setLang('en')">English</button>
+      <button type="button" class="lang-btn" id="btn-ru" onclick="setLang('ru')">Русский</button>
     </div>
   </header>
 
-  <nav class="cat-nav" id="cat-nav"></nav>
+  <nav class="cat-bar" id="cat-bar"></nav>
 
-  <main class="wrap">
-    <section class="studio-grid">
-      <div class="video-box">
-        <div class="video-header">
-          <span class="live-pill">STUDIO</span>
-          <span id="anchor-role">Boshlovchi</span>
-        </div>
-
-        <video id="anchor-video" class="anchor-video" controls playsinline></video>
-        <img id="fallback-img" class="fallback-img" src="" alt="Boshlovchi" />
-      </div>
-
-      <div class="news-details">
-        <img id="story-photo" class="story-photo" src="" alt="Yangilik rasmi" />
-        <h2 class="news-title" id="news-title"></h2>
-        <p class="news-desc" id="news-desc"></p>
-        <div class="note-box" id="note-box"></div>
-      </div>
-    </section>
-
-    <h3 class="list-title" id="list-title">Yangiliklar:</h3>
-    <div class="cards" id="cards"></div>
+  <main class="container">
+    <div class="section-head">
+      <h2 class="section-title" id="section-title">Yangiliklar</h2>
+      <span class="source-info" id="source-info"></span>
+    </div>
+    <div class="news-grid" id="news-grid"></div>
   </main>
 
   <script>
-    // Har bir yangilikka haqiqiy .mp4 video havolasini (videoUrl) joylashtiring
-    const DATA = {
+    // Aniq yangilik saytlari manbalari va RSS havolalari
+    const PORTAL_DATA = {
       uz: {
-        role: "O'zbekiston Studiya Boshlovchisi",
-        listTitle: "Bo'limdagi yangiliklar (bosing):",
-        note: "O'z videongizni ulash uchun kod ichidagi `videoUrl` maydoniga `.mp4` fayl manzilini (masalan: `videos/uz-sport-1.mp4`) yozing.",
-        cats: {
+        siteTitle: "YANGILIKLAR PORTALI",
+        sourceInfo: "Manbalar: Kun.uz, Gazeta.uz, Championat.asia",
+        readMore: "Saytda o'qish ->",
+        categories: {
           sport: "Sport",
-          edu: "Ta'lim",
+          education: "Ta'lim",
           world: "Dunyo",
           other: "Boshqa yangiliklar"
+        },
+        // Ixtiyoriy: RSS oqimini ulash uchun rssUrl yozish mumkin
+        rssFeeds: {
+          sport: "",
+          education: "",
+          world: "",
+          other: ""
         },
         items: {
           sport: [
             {
-              title: "O'zbekiston terma jamoasi muhim g'alabaga erishdi",
-              desc: "Sport yangiliklari: O'zbekiston terma jamoasi hal qiluvchi bahsda g'alaba qozonib, muxlislarni xursand qildi.",
+              source: "Championat.asia",
+              title: "O'zbekiston terma jamoasi o'quv-mashg'ulot yig'inlarini davom ettirmoqda",
+              text: "Milliy terma jamoa a'zolari navbatdagi rasmiy uchrashuvlar oldidan taktika va jismoniy tayyorgarlik mashg'ulotlarini o'tkazmoqda.",
               img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+              url: "https://championat.asia/uz"
             },
             {
-              title: "O'zbekiston terma jamoasi navbatdagi o'yinga tayyorlanmoqda",
-              desc: "O'zbekiston terma jamoasi mashg'ulotlarni davom ettirmoqda.",
+              source: "Kun.uz",
+              title: "Xalqaro sport musobaqalarida yosh atletlar ishtiroki kengaymoqda",
+              text: "Turli sport turlari bo'yicha xalqaro turnirlarda qatnashayotgan sportchilar uchun zamonaviy tayyorgarlik markazlari faoliyat yuritmoqda.",
               img: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://kun.uz/news/category/sport"
             }
           ],
-          edu: [
+          education: [
             {
-              title: "Dasturlash va sun'iy intellekt bo'yicha yangi dastur",
-              desc: "Ta'lim yangiliklari: Talabalar va yoshlar uchun yangi amaliy o'quv dasturi boshlandi.",
+              source: "Gazeta.uz",
+              title: "Oliy ta'lim va zamonaviy kasblarga o'qitish dasturlari yangilanmoqda",
+              text: "Ta'lim muassasalarida raqamli ko'nikmalar, muhandislik va xorijiy tillarni o'qitishga qaratilgan o'quv rejalari takomillashtirilmoqda.",
               img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.gazeta.uz/oz/jamiyat/"
             }
           ],
           world: [
             {
-              title: "Xalqaro energetika va iqlim uchrashuvi",
-              desc: "Dunyo yangiliklari: Davlatlar qayta tiklanuvchi energiya loyihalarini muhokama qilmoqda.",
+              source: "Kun.uz",
+              title: "Jahon iqtisodiyoti va energetika bozoridagi asosiy o'zgarishlar",
+              text: "Xalqaro maydonda logistika, energiya ta'minoti va iqlim tashabbuslari yuzasidan yangi kelishuvlar muhokama qilinmoqda.",
               img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://kun.uz/news/category/jahon"
             }
           ],
           other: [
             {
-              title: "Koinot teleskopidan yangi tasvirlar",
-              desc: "Boshqa yangiliklar: Astronomlar yangi kosmik kuzatuv natijalarini taqdim etdi.",
+              source: "Gazeta.uz",
+              title: "Ilm-fan va kosmik kuzatuvlar sohasidagi so'nggi yangiliklar",
+              text: "Tadqiqot markazlari astronomik kuzatuvlar va yangi texnologik yechimlar haqida ma'lumot berdi.",
               img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.gazeta.uz/oz/texnologiyalar/"
             }
           ]
         }
       },
       en: {
-        role: "English Studio Anchor",
-        listTitle: "Category news (click):",
-        note: "Set `videoUrl` to an `.mp4` link (for example `videos/en-sport-1.mp4`) to play a real studio anchor video.",
-        cats: {
+        siteTitle: "NEWS PORTAL",
+        sourceInfo: "Sources: BBC News, Reuters, Guardian",
+        readMore: "Read on source ->",
+        categories: {
           sport: "Sport",
-          edu: "Education",
+          education: "Education",
           world: "World",
           other: "Other News"
+        },
+        rssFeeds: {
+          sport: "https://feeds.bbci.co.uk/sport/rss.xml",
+          education: "",
+          world: "https://feeds.bbci.co.uk/news/world/rss.xml",
+          other: "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml"
         },
         items: {
           sport: [
             {
-              title: "National team wins an important match",
-              desc: "Sport News: The national team won a key match and delighted supporters.",
+              source: "BBC Sport",
+              title: "International football and athletics fixtures update",
+              text: "Teams continue preparations for upcoming international matches and championship qualifiers.",
               img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.bbc.com/sport"
             }
           ],
-          edu: [
+          education: [
             {
-              title: "New coding and AI programs for students",
-              desc: "Education News: Universities are launching practical programming courses.",
+              source: "BBC News",
+              title: "Universities expand digital and STEM learning initiatives",
+              text: "Higher education institutions are updating curricula to prepare students for modern technical fields.",
               img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.bbc.com/news/education"
             }
           ],
           world: [
             {
-              title: "Global energy and climate summit",
-              desc: "World News: Leaders met to discuss clean energy goals.",
+              source: "BBC World",
+              title: "Global diplomacy and clean energy developments",
+              text: "International summits focus on trade stability, climate policy, and renewable energy grids.",
               img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.bbc.com/news/world"
             }
           ],
           other: [
             {
-              title: "New deep-space telescope views",
-              desc: "Other News: Astronomers shared new images of distant galaxies.",
+              source: "BBC Science",
+              title: "Space observatories share new deep-space findings",
+              text: "Researchers published new observations of distant star systems and planetary atmospheres.",
               img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.bbc.com/news/science_and_environment"
             }
           ]
         }
       },
       ru: {
-        role: "Ведущая студии",
-        listTitle: "Новости раздела (нажмите):",
-        note: "Укажите ссылку на `.mp4` файл в поле `videoUrl` (например: `videos/ru-sport-1.mp4`), чтобы запускалось видео ведущего.",
-        cats: {
+        siteTitle: "НОВОСТНОЙ ПОРТАЛ",
+        sourceInfo: "Источники: РБК, Lenta.ru, ТАСС",
+        readMore: "Читать на сайте ->",
+        categories: {
           sport: "Спорт",
-          edu: "Образование",
+          education: "Образование",
           world: "Мир",
           other: "Другие новости"
+        },
+        rssFeeds: {
+          sport: "",
+          education: "",
+          world: "",
+          other: ""
         },
         items: {
           sport: [
             {
-              title: "Сборная одержала важную победу",
-              desc: "Новости спорта: Команда уверенно победила в важном матче.",
+              source: "Спорт",
+              title: "Подготовка команд к предстоящим международным турнирам",
+              text: "Спортивные коллективы проводят учебно-тренировочные сборы перед новыми матчами и стартами.",
               img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://www.championat.com/"
             }
           ],
-          edu: [
+          education: [
             {
-              title: "Новые программы обучения ИИ и коду",
-              desc: "Новости образования: Для студентов открыты новые курсы.",
+              source: "Образование",
+              title: "Новые образовательные программы и цифровые курсы",
+              text: "Университеты и образовательные центры расширяют программы подготовки специалистов.",
               img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://ria.ru/society/"
             }
           ],
           world: [
             {
-              title: "Форум по энергетике и климату",
-              desc: "Мировые новости: Участники обсудили зеленую энергетику.",
+              source: "Мир",
+              title: "Международные переговоры и вопросы мировой энергетики",
+              text: "Представители государств обсуждают развитие транспортных коридоров и энергетических проектов.",
               img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://ria.ru/world/"
             }
           ],
           other: [
             {
-              title: "Новые космические наблюдения",
-              desc: "Другие новости: Опубликованы новые снимки космоса.",
+              source: "Наука",
+              title: "Новые астрономические наблюдения и научные данные",
+              text: "Исследователи представили свежие данные о космических объектах и технологиях.",
               img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
-              poster: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-              videoUrl: ""
+              url: "https://ria.ru/science/"
             }
           ]
         }
       }
     };
 
-    let lang = "uz";
-    let cat = "sport";
-    let idx = 0;
+    let currentLang = "uz";
+    let currentCat = "sport";
 
-    function changeLang(newLang) {
-      stopVideo();
-      lang = newLang;
-      cat = "sport";
-      idx = 0;
+    function setLang(lang) {
+      currentLang = lang;
+      currentCat = "sport";
 
       document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
-      document.getElementById("l-" + lang).classList.add("active");
+      document.getElementById("btn-" + lang).classList.add("active");
 
-      renderCats();
-      renderCards();
-      renderCurrent(false);
+      document.getElementById("site-title").textContent = PORTAL_DATA[lang].siteTitle;
+      document.getElementById("source-info").textContent = PORTAL_DATA[lang].sourceInfo;
+
+      renderCategories();
+      loadNewsCards();
     }
 
-    function renderCats() {
-      const nav = document.getElementById("cat-nav");
-      nav.innerHTML = "";
-      const cats = DATA[lang].cats;
+    function renderCategories() {
+      const bar = document.getElementById("cat-bar");
+      bar.innerHTML = "";
+      const cats = PORTAL_DATA[currentLang].categories;
 
       Object.keys(cats).forEach(key => {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "cat-btn" + (key === cat ? " active" : "");
+        btn.className = "cat-btn" + (key === currentCat ? " active" : "");
         btn.textContent = cats[key];
         btn.onclick = () => {
-          stopVideo();
-          cat = key;
-          idx = 0;
-          renderCats();
-          renderCards();
-          renderCurrent(false);
+          currentCat = key;
+          renderCategories();
+          loadNewsCards();
         };
-        nav.appendChild(btn);
+        bar.appendChild(btn);
       });
     }
 
-    function renderCards() {
-      const box = document.getElementById("cards");
-      box.innerHTML = "";
-      const list = DATA[lang].items[cat] || [];
+    async function loadNewsCards() {
+      const langPack = PORTAL_DATA[currentLang];
+      document.getElementById("section-title").textContent = langPack.categories[currentCat];
 
-      list.forEach((item, i) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "card-btn" + (i === idx ? " selected" : "");
-        btn.innerHTML = `
-          <img src="${item.img}" alt="${item.title}" />
-          <span class="card-title">${item.title}</span>
-        `;
-        btn.onclick = () => {
-          idx = i;
-          renderCards();
-          renderCurrent(true);
-        };
-        box.appendChild(btn);
-      });
-    }
+      const rssUrl = langPack.rssFeeds[currentCat];
+      let cards = langPack.items[currentCat] || [];
 
-    function renderCurrent(autoPlay) {
-      const pack = DATA[lang];
-      const item = (pack.items[cat] || [])[idx] || { title: "", desc: "", img: "", poster: "", videoUrl: "" };
-
-      document.getElementById("anchor-role").textContent = pack.role;
-      document.getElementById("list-title").textContent = pack.listTitle;
-      document.getElementById("note-box").textContent = pack.note;
-
-      document.getElementById("story-photo").src = item.img;
-      document.getElementById("news-title").textContent = item.title;
-      document.getElementById("news-desc").textContent = item.desc;
-
-      const videoEl = document.getElementById("anchor-video");
-      const fallbackEl = document.getElementById("fallback-img");
-
-      if (item.videoUrl) {
-        fallbackEl.style.display = "none";
-        videoEl.style.display = "block";
-        videoEl.poster = item.poster || item.img;
-        videoEl.src = item.videoUrl;
-        if (autoPlay) {
-          videoEl.play().catch(() => {});
+      // Agar RSS URL ko'rsatilgan bo'lsa, rss2json orqali yangi maqolalarni tortib ko'radi
+      if (rssUrl) {
+        try {
+          const apiUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
+          const res = await fetch(apiUrl);
+          if (res.ok) {
+            const json = await res.json();
+            if (Array.isArray(json.items) && json.items.length > 0) {
+              cards = json.items.slice(0, 6).map(entry => ({
+                source: json.feed?.title || "RSS Manba",
+                title: entry.title || "",
+                text: (entry.description || "").replace(/<[^>]*>/g, "").slice(0, 180) + "...",
+                img: entry.enclosure?.link || entry.thumbnail || cards[0]?.img || "",
+                url: entry.link || "#"
+              }));
+            }
+          }
+        } catch (err) {
+          // Tarmoq yoki RSS xatosida tayyor manba kartochkalari ko'rsatiladi
         }
-      } else {
-        videoEl.pause();
-        videoEl.removeAttribute("src");
-        videoEl.style.display = "none";
-        fallbackEl.style.display = "block";
-        fallbackEl.src = item.poster || item.img;
       }
+
+      const grid = document.getElementById("news-grid");
+      grid.innerHTML = "";
+
+      cards.forEach(item => {
+        const article = document.createElement("article");
+        article.className = "card";
+        article.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" />
+          <div class="card-body">
+            <div class="card-meta">${item.source}</div>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-text">${item.text}</p>
+            <a class="card-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${langPack.readMore}</a>
+          </div>
+        `;
+        grid.appendChild(article);
+      });
     }
 
-    function stopVideo() {
-      const videoEl = document.getElementById("anchor-video");
-      videoEl.pause();
-      videoEl.currentTime = 0;
-    }
-
-    changeLang("uz");
+    setLang("uz");
   </script>
 </body>
 </html>
