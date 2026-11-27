@@ -1,1 +1,249 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI TV - Yangiliklar Studiyasi</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --accent: #ef4444;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        
+        /* Header va Til tugmalari */
+        header {
+            background: linear-gradient(90deg, #0f172a, #1e3a8a);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--accent);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .logo { font-size: 24px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .live-badge { background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 12px; animation: pulse 1.5s infinite; }
+        .lang-buttons button {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .lang-buttons button.active, .lang-buttons button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
 
+        /* Kategoriya tugmalari */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 5%;
+            background: #162032;
+            flex-wrap: wrap;
+        }
+        .categories button {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid #334155;
+            padding: 10px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .categories button.active, .categories button:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        /* TV Studiya ekrani */
+        .studio-container {
+            max-width: 1000px;
+            margin: 25px auto;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #090d16 100%);
+            border: 4px solid #334155;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .studio-screen {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 20px;
+            padding: 25px;
+            align-items: center;
+        }
+        @media (max-width: 768px) { .studio-screen { grid-template-columns: 1fr; } }
+
+        /* Boshlovchi qismi */
+        .anchor-box {
+            text-align: center;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .anchor-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #3b82f6;
+            transition: 0.3s;
+        }
+        .speaking .anchor-avatar {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--accent);
+            transform: scale(1.03);
+        }
+        .sound-wave {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            height: 20px;
+            margin-top: 10px;
+            opacity: 0;
+        }
+        .speaking .sound-wave { opacity: 1; }
+        .sound-wave span {
+            width: 4px;
+            background: var(--accent);
+            animation: wave 0.6s infinite ease-in-out;
+        }
+        .sound-wave span:nth-child(2) { animation-delay: 0.1s; }
+        .sound-wave span:nth-child(3) { animation-delay: 0.2s; }
+        .sound-wave span:nth-child(4) { animation-delay: 0.3s; }
+
+        /* Yangilik rasmi va matni */
+        .news-display img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        .news-display h2 { font-size: 20px; margin-bottom: 10px; color: #93c5fd; }
+        .news-display p { font-size: 15px; color: #e2e8f0; margin-bottom: 15px; }
+        
+        .controls button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .controls button.stop-btn { background: #475569; }
+
+        /* Pastki yuguruvchi satr (Ticker) */
+        .ticker {
+            background: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Yangiliklar ro'yxati */
+        .news-list {
+            max-width: 1000px;
+            margin: 20px auto 50px;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .news-card {
+            background: var(--card);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid #334155;
+            transition: 0.3s;
+        }
+        .news-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
+        .news-card img { width: 100%; height: 150px; object-fit: cover; }
+        .news-card-body { padding: 15px; }
+        .news-card-body h3 { font-size: 16px; margin-bottom: 8px; }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes wave { 0%, 100% { height: 5px; } 50% { height: 20px; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">📺 GLOBAL AI NEWS <span class="live-badge">LIVE STUDIO</span></div>
+    <div class="lang-buttons">
+        <button onclick="setLanguage('uz')" id="btn-uz" class="active">🇺🇿 O'zbek</button>
+        <button onclick="setLanguage('en')" id="btn-en">🇬🇧 English</button>
+        <button onclick="setLanguage('ru')" id="btn-ru">🇷🇺 Русский</button>
+    </div>
+</header>
+
+<div class="categories" id="category-bar"></div>
+
+<!-- STUDIYA QISMI -->
+<div class="studio-container">
+    <div class="studio-screen">
+        <div class="anchor-box" id="anchor-box">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Boshlovchi" class="anchor-avatar">
+            <h3 style="margin-top:10px;" id="anchor-name">AI Boshlovchi</h3>
+            <p style="font-size: 12px; color: #94a3b8;" id="studio-status">Efirga tayyor</p>
+            <div class="sound-wave">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <div class="news-display">
+            <img id="main-img" src="" alt="Yangilik rasmi">
+            <h2 id="main-title">Yangilik sarlavhasi</h2>
+            <p id="main-text">Yangilik matni shu yerda ko'rinadi...</p>
+            <div class="controls">
+                <button onclick="speakNews()" id="read-btn">🔊 O'qib berish</button>
+                <button onclick="stopSpeech()" class="stop-btn" id="stop-btn">⏹ To'xtatish</button>
+            </div>
+        </div>
+    </div>
+    <div class="ticker">
+        <span>BREAKING NEWS:</span>
+        <marquee id="ticker-text">Xush kelibsiz! Til va bo'limni tanlang, boshlovchi yangiliklarni o'qib beradi.</marquee>
+    </div>
+</div>
+
+<!-- QO'SHIMCHA YANGILIKLAR KARTALARI -->
+<div class="news-list" id="news-list"></div>
+
+<script>
+    // Yangiliklar bazasi (Shu yerga yangi yangiliklar qo'shishingiz mumkin)
+    const newsData = {
+        uz: {
+            voiceCode: 'uz-UZ',
+            anchor: "Madina (Studia Boshlovchisi)",
+            readBtn: "🔊 Boshlovchi o'qisin",
+            stopBtn: "⏹ To'xtatish",
+            categories: { sport: "⚽ Sport", edu: "🎓 Ta'lim", world: "🌍 Dunyo", other: "💡 Boshqa" },
+            items: {
+                sport: [
+                    {
+                        title: "O'zbekiston terma jamoasi muhim g'alabaga erishdi",
+                        text: "Assalomu alaykum! Sport yangiliklari bilan tan
