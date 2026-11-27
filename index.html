@@ -3,36 +3,161 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yangiliklar Portali</title>
+  <title>Yangiliklar Portali — Barcha bo'limlar</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { background: #0f172a; color: #f8fafc; padding-bottom: 40px; }
-    header { background: #1e293b; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #2563eb; }
+    body { background: #0f172a; color: #f8fafc; padding-bottom: 44px; }
+
+    header {
+      background: #1e293b;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 2px solid #2563eb;
+    }
     .brand { font-size: 18px; font-weight: bold; }
-    .cats { background: #172033; padding: 12px 18px; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #26354d; }
-    .cat-btn { padding: 7px 14px; border-radius: 18px; border: 1px solid #3b82f6; background: #0f172a; color: #e2e8f0; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .search-input {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #fff;
+      min-width: 220px;
+    }
+
+    .cats {
+      background: #172033;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid #26354d;
+    }
+    .cat-btn {
+      padding: 7px 14px;
+      border-radius: 18px;
+      border: 1px solid #3b82f6;
+      background: #0f172a;
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
     .cat-btn.active { background: #2563eb; color: #fff; }
-    .wrap { max-width: 1080px; margin: 20px auto; padding: 0 14px; }
-    .bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-    input { padding: 8px 12px; border-radius: 6px; border: 1px solid #475569; background: #1e293b; color: #fff; min-width: 200px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
-    .card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
+
+    .wrap { max-width: 1120px; margin: 20px auto; padding: 0 14px; }
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card img {
+      width: 100%;
+      height: 175px;
+      object-fit: cover;
+      background: #0f172a;
+    }
+    .card-body {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
     .meta { font-size: 12px; color: #93c5fd; font-weight: 600; }
-    .tv-box { background: #172554; border: 1px solid #3b82f6; padding: 8px 10px; border-radius: 7px; font-size: 12px; line-height: 1.5; color: #dbeafe; }
-    .card h3 { font-size: 16px; line-height: 1.35; }
+    .tv-box {
+      background: #172554;
+      border: 1px solid #3b82f6;
+      padding: 8px 10px;
+      border-radius: 7px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #dbeafe;
+    }
+    .card h3 { font-size: 16px; line-height: 1.38; }
     .card p { font-size: 14px; color: #cbd5e1; line-height: 1.5; flex: 1; }
-    .btn { align-self: flex-start; padding: 7px 13px; border-radius: 6px; border: none; background: #2563eb; color: #fff; cursor: pointer; font-size: 13px; font-weight: 600; }
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; padding: 14px; z-index: 50; }
+    .btn {
+      align-self: flex-start;
+      padding: 7px 13px;
+      border-radius: 6px;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .btn:hover { background: #3b82f6; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      z-index: 50;
+    }
     .modal.open { display: flex; }
-    .modal-box { background: #1e293b; border: 1px solid #475569; border-radius: 12px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 20px; }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .close-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid #64748b; background: #0f172a; color: #fff; cursor: pointer; }
+    .modal-box {
+      background: #1e293b;
+      border: 1px solid #475569;
+      border-radius: 12px;
+      max-width: 660px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .close-btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid #64748b;
+      background: #0f172a;
+      color: #fff;
+      cursor: pointer;
+    }
+    .modal-img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="brand">YANGILIKLAR PORTALI</div>
-    <input type="search" id="q" oninput="render()" placeholder="Yangilik izlash..." />
+    <input type="search" class="search-input" id="q" oninput="render()" placeholder="Barcha bo'limlardan izlash..." />
   </header>
 
   <nav class="cats" id="cats"></nav>
@@ -51,12 +176,22 @@
         <span class="meta" id="m-meta"></span>
         <button type="button" class="close-btn" onclick="closeM()">Yopish</button>
       </div>
+      <img id="m-img" class="modal-img" src="" alt="" />
       <h3 id="m-title" style="margin-bottom:10px; font-size:19px;"></h3>
       <p id="m-body" style="line-height:1.65; color:#e2e8f0; white-space:pre-line;"></p>
     </div>
   </div>
 
   <script>
+    const IMG_SPORT = "https://upload.wikimedia.org/wikipedia/commons/1/16/Wembley_Stadium_interior.jpg?utm_source=uz.wikipedia.org&utm_campaign=index&utm_content=original";
+    const IMG_TIMES = "https://stadion.uz/images/news/Sptv2.jpg";
+    const IMG_EDU = "https://tsuull.uz/sites/default/files/photo_2025-10-06_11-54-57.jpg";
+    const IMG_WORLD = "http://kartografiya.uz/wp-content/uploads/2021/04/karta_mira_uzb_flagi-1024x679.jpg";
+    const IMG_AMERICA = "https://gdb.voanews.com/14a577d8-96d7-4c4f-bd71-ddf393420724_tv_w1200_r1.jpg";
+    const IMG_RUSSIA = "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Saint_Basil%27s_Cathedral_and_the_Red_Square.jpg/1280px-Saint_Basil%27s_Cathedral_and_the_Red_Square.jpg?utm_source=uz.wikipedia.org&utm_campaign=index&utm_content=thumbnail";
+    const IMG_UZB = "https://upload.wikimedia.org/wikipedia/commons/1/16/Tashkent_City_Park_at_night_2019.jpg?utm_source=uz.wikipedia.org&utm_campaign=index&utm_content=original";
+    const IMG_OTHER = "https://cdn.uza.uz/2025/08/13/09/38/7jLDue0KL8DUZjV4KdowS1N5R5EVRev0_front.jpg";
+
     const CATS = {
       sport: "Sport",
       times: "O'yinlar vaqti (+05)",
@@ -72,21 +207,17 @@
       sport: [
         {
           meta: "Futbol klublari",
-          title: "Yevropa futbol klublari ichki chempionat va xalqaro turlarga tayyorlanmoqda",
-          short: "Murabbiylar shtabi tarkib rotatsiyasi, jismoniy tiklanish va o'yin taktikasiga e'tibor qaratmoqda.",
-          full: "Yevropa va jahon futbol klublari ichki chempionatlar hamda xalqaro turnirlardagi ketma-ket turlarga tayyorgarlik ko'rmoqda. Har bir uchrashuv turnir jadvalidagi o'rinlarga bevosita ta'sir qiladi."
+          title: "Yevropa va jahon futbol klublari ketma-ket turlarga tayyorlanmoqda",
+          short: "Murabbiylar shtabi tarkib rotatsiyasi, jismoniy tiklanish va hujum-himoya muvozanatiga e'tibor qaratmoqda.",
+          full: "Yevropa va jahon futbol klublari ichki chempionatlar hamda xalqaro turnirlardagi zich taqvim sharoitida o'yin o'tkazmoqda. Murabbiylar tarkib rotatsiyasi, jismoniy tiklanish va taktik moslashuv ustida ishlamoqda; har bir turdagi ochkolar turnir jadvalidagi o'rinlarga bevosita ta'sir qiladi.",
+          img: IMG_SPORT
         },
         {
-          meta: "Basketbol",
-          title: "Basketbol klublari muntazam mavsumda uy va safar o'yinlarini o'tkazmoqda",
-          short: "Jamoalar himoya taktikasi, zarbalar aniqligi va zaxira o'yinchilari almashinuvini sinovdan o'tkazmoqda.",
-          full: "Basketbol klublari muntazam mavsum davomida ketma-ket uchrashuvlar o'tkazib, himoya tartibi, hujum sur'ati va tarkib rotatsiyasini takomillashtirmoqda."
-        },
-        {
-          meta: "Tennis va avtosport",
-          title: "Xalqaro tennis turnirlari va avtosport bosqichlari davom etmoqda",
-          short: "Sportchilar reyting ochkolari, shinalar strategiyasi va poyga tezligi uchun bellashmoqda.",
-          full: "Tennis turnirlarida ishtirokchilar reyting ochkolari uchun kortda kurashmoqda, avtosport jamoalari esa trassa sharoitiga mos taktika va tezlik ustida ishlamoqda."
+          meta: "Basketbol, tennis va avtosport",
+          title: "Basketbol mavsumi, tennis turnirlari va avtosport bosqichlari",
+          short: "Jamoalar himoya taktikasi va zarbalar aniqligini sinovdan o'tkazmoqda, tennis va avtosportda esa reyting hamda strategiya muhim.",
+          full: "Basketbol klublari muntazam mavsumdagi uy va safar o'yinlarida himoya tizimi va zaxira rotatsiyasini sinovdan o'tkazmoqda. Tennisda reyting ochkolari va rallilardagi chidamlilik, avtosportda esa trassa sharoitiga mos shinalar strategiyasi va tezlik asosiy omil bo'lib qolmoqda.",
+          img: IMG_SPORT
         }
       ],
       times: [
@@ -96,40 +227,58 @@
           channel: "Sport TV / Futbol TV efir jadvalini tekshiring",
           title: "Nottingham Forest — Chelsea",
           short: "Uchrashuv Toshkent vaqti bilan 2026-yil 28-noyabr soat 01:00 da rejalashtirilgan.",
-          full: "O'yin: Nottingham Forest — Chelsea\nSoat: 2026-11-28, 01:00 (+05)\nKanal: O'zbekistondagi sport telekanallari (Sport TV / Futbol TV) kunlik efir dasturini boshlanishidan oldin tekshiring."
+          full: "O'yin: Nottingham Forest — Chelsea\nSoat: 2026-11-28, 01:00 (+05)\nKanal: O'zbekistondagi sport telekanallari (Sport TV / Futbol TV) kunlik jadvali o'zgarishi mumkinligi sababli efir dasturini boshlanishidan oldin tekshiring.",
+          img: IMG_TIMES
         },
         {
           meta: "Angliya Premyer-ligasi",
           time: "2026-11-28 (+05)",
           channel: "Sport TV / Futbol TV efir jadvalini tekshiring",
           title: "Arsenal — Manchester City va Manchester United — Brentford",
-          short: "2026-yil 28-noyabr taqvimida belgilangan uchrashuvlar.",
-          full: "28-noyabr kuni rejalashtirilgan uchrashuvlar: Arsenal — Manchester City hamda Manchester United — Brentford. Aniq boshlanish soati va efir kanalini rasmiy telekanal dasturidan tekshiring."
+          short: "2026-yil 28-noyabr taqvimida belgilangan muhim uchrashuvlar.",
+          full: "2026-yil 28-noyabr (+05) taqvimida Arsenal — Manchester City hamda Manchester United — Brentford uchrashuvlari rejalashtirilgan. Aniq boshlanish soati va kanalni rasmiy telekanal dasturidan tekshiring.",
+          img: IMG_TIMES
         }
       ],
       edu: [
         {
-          meta: "Oliy ta'lim va kurslar",
-          title: "Universitetlarda amaliy mashg'ulotlar va raqamli o'quv dasturlari kengaymoqda",
-          short: "Dasturlash, ma'lumotlar tahlili, laboratoriyalar va xorijiy tillar bo'yicha dasturlar yangilanmoqda.",
-          full: "Oliy o'quv yurtlarida talabalar uchun amaliy laboratoriyalar, raqamli platformalar hamda dasturlash, tahlil va chet tillari bo'yicha o'quv kurslari kengaytirilmoqda."
+          meta: "Oliy ta'lim va raqamli dasturlar",
+          title: "Universitetlarda amaliy mashg'ulotlar va raqamli kurslar kengaymoqda",
+          short: "Talabalar uchun zamonaviy laboratoriyalar, dasturlash, tahlil va xorijiy tillar dasturlari yangilanmoqda.",
+          full: "Universitetlarda talabalarning amaliy tajribasini oshirish, zamonaviy laboratoriyalar va raqamli o'quv muhitini rivojlantirish ishlari olib borilmoqda. Dasturlash, ma'lumotlar tahlili, muhandislik va xorijiy tillar bo'yicha real amaliy loyihalar kengaytirilmoqda.",
+          img: IMG_EDU
         }
       ],
       world: [
         {
           meta: "Xalqaro maydon",
-          title: "Jahon iqtisodiyoti, savdo yo'laklari va energetika muzokaralari",
-          short: "Davlatlar o'rtasida investitsiya loyihalari, logistika va energetika ta'minoti muhokama qilinmoqda.",
-          full: "Xalqaro maydonda savdo yo'laklarini rivojlantirish, energetika xavfsizligi, logistika zanjirlari va diplomatik hamkorlik bo'yicha muzokaralar olib borilmoqda."
+          title: "Savdo yo'laklari, investitsiyalar va energetika muzokaralari",
+          short: "Xalqaro maydonda logistika zanjirlari, energetika ta'minoti va diplomatik hamkorlik muhokama qilinmoqda.",
+          full: "Xalqaro maydonda savdo yo'laklarini rivojlantirish, investitsiya loyihalari, logistika zanjirlari, energetika xavfsizligi va diplomatik uchrashuvlar yuzasidan muzokaralar olib borilmoqda.",
+          img: IMG_WORLD
         }
       ],
       america: [
         {
-          meta: "Shimoliy va Janubiy Amerika",
-          title: "Amerika qit'asida texnologiya, sanoat va savdo yangiliklari",
-          short: "AQSh va Amerika mintaqasidagi iqtisodiyot, texnologiya kompaniyalari va infratuzilma jarayonlari.",
-          full: "Amerika qit'asida sanoat ishlab chiqarishi, raqamli texnologiyalar, savdo aloqalari va shahar infratuzilmasini yangilashga oid yangiliklar yoritilmoqda."
+          meta: "Amerika qit'asi",
+          title: "Texnologiya kompaniyalari, sanoat va savdo aloqalari",
+          short: "Shimoliy va Janubiy Amerika davlatlarida texnologiya, sanoat ishlab chiqarishi va shahar infratuzilmasi yoritilmoqda.",
+          full: "Amerika qit'asida texnologiya kompaniyalari, sanoat ishlab chiqarishi, savdo aloqalari va shahar infratuzilmasiga oid yangiliklar yoritilmoqda. Innovatsiyalar va sanoat zanjirlari mintaqa iqtisodiyotining asosiy yo'nalishlarini belgilaydi.",
+          img: IMG_AMERICA
         }
       ],
       russia: [
         {
+          meta: "Rossiya",
+          title: "Transport yo'laklari, sanoat loyihalari va hududiy rivojlanish",
+          short: "Logistika, sanoat ishlab chiqarishi va mintaqaviy iqtisodiy tashabbuslarga oid ma'lumotlar berilmoqda.",
+          full: "Rossiyada transport yo'laklari, sanoat loyihalari, logistika va mintaqaviy iqtisodiy rivojlanishga oid ma'lumotlar berilmoqda. Asosiy e'tibor yuk tashish yo'nalishlari, ishlab chiqarish quvvatlari va hududiy loyihalarga qaratilgan.",
+          img: IMG_RUSSIA
+        }
+      ],
+      uzbekistan: [
+        {
+          meta: "O'zbekiston",
+          title: "Infratuzilma, energetika, tadbirkorlik va raqamli xizmatlar",
+          short: "Yo'l-transport tizimi, energetika quvvatlari va raqamli davlat xizmatlarini rivojlantirish loyihalari.",
+          full: "O'zbekistonda yo'l-transport infratuzilmasini yangilash, energetika quvvatlarini ko'paytirish, tadb
