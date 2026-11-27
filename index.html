@@ -92,7 +92,7 @@
       width: 100%;
       height: 180px;
       object-fit: cover;
-      background: #090e1a;
+      background: #1e293b;
     }
     .card-body {
       padding: 15px;
@@ -162,67 +162,52 @@
         readMore: "Manba saytida o'qish ->",
         countLabel: "ta yangilik",
         categories: {
-          sport: "Sport (Klublar va boshqa turlar)",
+          sport: "Sport",
           education: "Ta'lim",
           world: "Dunyo",
           other: "Boshqa yangiliklar"
-        },
-        // Har bir bo'lim uchun bir nechta RSS havolani qo'shish mumkin
-        rss: {
-          sport: ["https://feeds.bbci.co.uk/sport/rss.xml"],
-          education: [],
-          world: ["https://feeds.bbci.co.uk/news/world/rss.xml"],
-          other: ["https://feeds.bbci.co.uk/news/science_and_environment/rss.xml"]
         },
         items: {
           sport: [
             {
               source: "Sports.ru",
-              subtopic: "Yevropa klublari",
-              title: "Yevropa chempionlar ligasi va top-klublar jadvali",
-              text: "Yevropaning yetakchi klublari — 'Real Madrid', 'Manchester City', 'Bayern' va 'Inter' ichki chempionatlar hamda xalqaro turnirlardagi ketma-ket turlarga tayyorgarlik ko'rmoqda.",
+              subtopic: "Futbol klublari",
+              title: "Yevropa klublari ichki chempionat va yevrokubok turlariga tayyorlanmoqda",
+              text: "Yevropaning yetakchi futbol klublari — 'Real Madrid', 'Manchester City', 'Bayern' va 'Inter' taqvimdagi ketma-ket uchrashuvlar, tarkib rotatsiyasi va transfer muhokamalari markazida.",
               img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
               url: "https://www.sports.ru/football/"
             },
             {
-              source: "NBA / Basketbol",
+              source: "NBA",
               subtopic: "Basketbol",
-              title: "Basketbol ligalarida mavsum uchrashuvlari davom etmoqda",
-              text: "Klublar muntazam chempionat doirasida safar va uy o'yinlarida ochkolar uchun kurash olib bormoqda; jamoalar tarkibida rotatsiya va yangi taktik sxemalar sinovdan o'tkazilmoqda.",
+              title: "Basketbol ligalarida klublar o'rtasidagi muntazam uchrashuvlar davom etmoqda",
+              text: "Jamoalar konferensiya jadvalidagi o'rinlar uchun kurashmoqda; murabbiylar himoya taktikasi va zaxira o'yinchilarining samaradorligini sinovdan o'tkazmoqda.",
               img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.nba.com/"
+              url: "https://www.nba.com/news"
             },
             {
               source: "Formula 1",
               subtopic: "Avtosport",
-              title: "Avtosport jamoalari gran-pri bosqichlariga tayyorlanmoqda",
-              text: "Konstruktorlar va poygachilar trassa sharoitiga mos shinalar strategiyasi, aerodinamika sozlamalari va saralash poygalari natijalari ustida ishlamoqda.",
+              title: "Avtosport jamoalari gran-pri bosqichlarida tezlik va strategiya ustida ishlamoqda",
+              text: "Poygachilar va muhandislar trassa sharoitiga mos shinalar taktikasi, aerodinamika sozlamalari va saralash natijalari bo'yicha bellashmoqda.",
               img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.formula1.com/"
+              url: "https://www.formula1.com/en/latest/all"
             },
             {
-              source: "ATP / WTA Tennis",
+              source: "ATP / WTA",
               subtopic: "Tennis",
-              title: "Xalqaro tennis turnirlarida kort bahslari qizg'in kechmoqda",
-              text: "Yakkalik va juftlik bahslarida ishtirok etayotgan tennischilar reyting ochkolari hamda keyingi bosqich yo'llanmasi uchun bellashmoqda.",
+              title: "Xalqaro tennis turnirlarida reyting ochkolari uchun bahslar davom etmoqda",
+              text: "Yakkalik va juftlik bahslarida ishtirok etayotgan tennischilar turli qoplamali kortlarda keyingi bosqich uchun kurashmoqda.",
               img: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=800&q=80",
-              url: "https://www.atptour.com/"
+              url: "https://www.atptour.com/en/news"
             },
             {
               source: "Championat.asia",
-              subtopic: "Klub futboli va terma",
-              title: "Klublar va terma jamoalar darajasidagi xalqaro uchrashuvlar",
-              text: "Futbol klublari o'z chempionatlari bilan bir qatorda xalqaro musobaqalardagi natijalarini yaxshilashga e'tibor qaratmoqda.",
+              subtopic: "Klub va terma futbol",
+              title: "Klublar va terma jamoalar darajasidagi muhim futbol uchrashuvlari",
+              text: "Klublar milliy chempionatlar hamda xalqaro turnirlardagi natijalarini yaxshilash ustida ish olib bormoqda.",
               img: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80",
               url: "https://championat.asia/uz"
-            },
-            {
-              source: "Yengil atletika",
-              subtopic: "Yengil atletika",
-              title: "Yugurish, sakrash va uloqtirish turlarida xalqaro startlar",
-              text: "Turli masofalarga yugurish va maydon musobaqalarida qatnashayotgan atletlar shaxsiy rekordlar va turnir medallarini ko'zlamoqda.",
-              img: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80",
-              url: "https://worldathletics.org/"
             }
           ],
           education: [
@@ -235,7 +220,7 @@
               url: "https://www.gazeta.uz/oz/jamiyat/"
             },
             {
-              source: "Coursera / EdTech",
+              source: "Coursera",
               subtopic: "Onlayn ta'lim",
               title: "Masofaviy kurslar va dasturlash bo'yicha o'quv yo'nalishlari",
               text: "Talabalar va mustaqil o'rganuvchilar uchun dasturlash, ma'lumotlar tahlili hamda xorijiy tillar bo'yicha yangi o'quv modullari taqdim etilmoqda.",
@@ -253,7 +238,7 @@
               url: "https://kun.uz/news/category/jahon"
             },
             {
-              source: "Reuters / World",
+              source: "Reuters",
               subtopic: "Energetika va iqlim",
               title: "Energetika bozori va iqlim o'zgarishiga qarshi chora-tadbirlar",
               text: "Energiya resurslari taqsimoti, qayta tiklanuvchi manbalar va ekologik barqarorlik masalalari xalqaro kun tartibida qolmoqda.",
@@ -267,4 +252,272 @@
               subtopic: "Texnologiya",
               title: "Axborot texnologiyalari va raqamli xizmatlar rivoji",
               text: "Dasturiy ta'minot, bulutli infratuzilma va raqamli yechimlar sohasida yangi loyihalar amalga oshirilmoqda.",
-              img: "
+              img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.gazeta.uz/oz/texnologiyalar/"
+            },
+            {
+              source: "NASA",
+              subtopic: "Ilm-fan va kosmos",
+              title: "Kosmik tadqiqotlar va astronomik kuzatuvlar natijalari",
+              text: "Ilmiy markazlar va rasadxonalar sayyoralar, yulduz tizimlari va kosmik apparatlar ishi haqida yangi ma'lumotlar e'lon qilmoqda.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.nasa.gov/news/"
+            }
+          ]
+        }
+      },
+      en: {
+        brand: "GLOBAL NEWS PORTAL",
+        allSources: "All sources",
+        readMore: "Read at source ->",
+        countLabel: "stories",
+        categories: {
+          sport: "Sport",
+          education: "Education",
+          world: "World",
+          other: "Other News"
+        },
+        items: {
+          sport: [
+            {
+              source: "BBC Sport",
+              subtopic: "Football Clubs",
+              title: "European football clubs push through domestic and continental fixtures",
+              text: "Top clubs across Europe are balancing league points races, squad depth, and midweek international ties.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.bbc.com/sport/football"
+            },
+            {
+              source: "NBA",
+              subtopic: "Basketball",
+              title: "Basketball franchises navigate conference matchups and rotation adjustments",
+              text: "Teams are competing through regular-season schedules with evolving defensive schemes and bench lineups.",
+              img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.nba.com/news"
+            },
+            {
+              source: "Formula 1",
+              subtopic: "Motorsport",
+              title: "Motorsport teams refine race pace, tire strategy, and setups",
+              text: "Drivers and race engineers are focusing on qualifying speed, pit-stop windows, and circuit telemetry.",
+              img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.formula1.com/en/latest/all"
+            },
+            {
+              source: "ATP / WTA",
+              subtopic: "Tennis",
+              title: "Tennis tour players compete for ranking points and match rhythm",
+              text: "Singles and doubles competitors are facing varied court surfaces across international tour stops.",
+              img: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.atptour.com/en/news"
+            }
+          ],
+          education: [
+            {
+              source: "BBC Education",
+              subtopic: "Higher Education",
+              title: "Universities expand digital skills and interdisciplinary research",
+              text: "Academic institutions are updating degree programs to combine core theory with practical data and tech skills.",
+              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.bbc.com/news/education"
+            }
+          ],
+          world: [
+            {
+              source: "BBC World",
+              subtopic: "Global Affairs",
+              title: "International talks focus on trade routes, energy security, and diplomacy",
+              text: "Governments and global institutions continue discussions on supply chains, climate goals, and regional stability.",
+              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.bbc.com/news/world"
+            }
+          ],
+          other: [
+            {
+              source: "NASA",
+              subtopic: "Science & Space",
+              title: "Space agencies and observatories release new scientific findings",
+              text: "Researchers are sharing fresh data on planetary science, deep-space imaging, and engineering milestones.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.nasa.gov/news/"
+            }
+          ]
+        }
+      },
+      ru: {
+        brand: "ГЛОБАЛЬНЫЙ НОВОСТНОЙ ПОРТАЛ",
+        allSources: "Все источники",
+        readMore: "Читать на источнике ->",
+        countLabel: "новостей",
+        categories: {
+          sport: "Спорт",
+          education: "Образование",
+          world: "Мир",
+          other: "Другие новости"
+        },
+        items: {
+          sport: [
+            {
+              source: "Футбол / Клубы",
+              subtopic: "Клубный футбол",
+              title: "Европейские и мировые клубы проводят матчи чемпионатов и кубков",
+              text: "Клубы ведут борьбу за места в турнирных таблицах, обновляют игровые схемы и готовятся к плотному графику матчей.",
+              img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.championat.com/football/"
+            },
+            {
+              source: "Баскетбол",
+              subtopic: "Баскетбол",
+              title: "Баскетбольные клубы продолжают регулярный сезон",
+              text: "Команды проводят серии домашних и выездных встреч, уделяя внимание защите, темпу игры и ротации состава.",
+              img: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.championat.com/basketball/"
+            },
+            {
+              source: "Автоспорт",
+              subtopic: "Автоспорт",
+              title: "Команды автоспорта работают над темпом и стратегией на этапах",
+              text: "Инженеры и пилоты настраивают болиды под особенности трасс, работу шин и квалификационные круги.",
+              img: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.championat.com/auto/"
+            },
+            {
+              source: "Теннис",
+              subtopic: "Теннис",
+              title: "Международные теннисные турниры и борьба за рейтинговые очки",
+              text: "Игроки выступают в одиночном и парном разрядах на различных покрытиях в рамках мирового календаря.",
+              img: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=800&q=80",
+              url: "https://www.championat.com/tennis/"
+            }
+          ],
+          education: [
+            {
+              source: "РИА Образование",
+              subtopic: "Образование",
+              title: "Развитие образовательных программ и цифровых навыков",
+              text: "Вузы и образовательные платформы расширяют курсы по технологиям, аналитике и прикладным специальностям.",
+              img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+              url: "https://ria.ru/society/"
+            }
+          ],
+          world: [
+            {
+              source: "РИА Мир",
+              subtopic: "Мир",
+              title: "Международная повестка, торговля и энергетические проекты",
+              text: "Страны обсуждают логистику, энергобаланс, климат и развитие двустороннего сотрудничества.",
+              img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+              url: "https://ria.ru/world/"
+            }
+          ],
+          other: [
+            {
+              source: "РИА Наука",
+              subtopic: "Наука и космос",
+              title: "Новые данные научных исследований и космических наблюдений",
+              text: "Ученые публикуют результаты наблюдений за космосом, новых материалов и технологических разработок.",
+              img: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80",
+              url: "https://ria.ru/science/"
+            }
+          ]
+        }
+      }
+    };
+
+    let currentLang = "uz";
+    let currentCat = "sport";
+    let currentStories = [];
+
+    function setLang(lang) {
+      currentLang = lang;
+      currentCat = "sport";
+
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById("l-" + lang).classList.add("active");
+      document.getElementById("brand-name").textContent = PORTAL[lang].brand;
+
+      renderCategories();
+      loadCategoryStories();
+    }
+
+    function renderCategories() {
+      const bar = document.getElementById("cat-bar");
+      bar.innerHTML = "";
+      const cats = PORTAL[currentLang].categories;
+
+      Object.keys(cats).forEach(key => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "cat-btn" + (key === currentCat ? " active" : "");
+        btn.textContent = cats[key];
+        btn.onclick = () => {
+          currentCat = key;
+          renderCategories();
+          loadCategoryStories();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function loadCategoryStories() {
+      const pack = PORTAL[currentLang];
+      document.getElementById("section-title").textContent = pack.categories[currentCat];
+      currentStories = [...(pack.items[currentCat] || [])];
+      populateSourceFilter();
+      renderFilteredCards();
+    }
+
+    function populateSourceFilter() {
+      const select = document.getElementById("source-select");
+      const pack = PORTAL[currentLang];
+      const sources = [...new Set(currentStories.map(item => item.source))];
+
+      select.innerHTML = "";
+      const allOpt = document.createElement("option");
+      allOpt.value = "ALL";
+      allOpt.textContent = pack.allSources;
+      select.appendChild(allOpt);
+
+      sources.forEach(src => {
+        const opt = document.createElement("option");
+        opt.value = src;
+        opt.textContent = src;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderFilteredCards() {
+      const pack = PORTAL[currentLang];
+      const selectedSource = document.getElementById("source-select").value;
+      const filtered = selectedSource === "ALL"
+        ? currentStories
+        : currentStories.filter(item => item.source === selectedSource);
+
+      document.getElementById("count-badge").textContent = `${filtered.length} ${pack.countLabel}`;
+
+      const grid = document.getElementById("news-grid");
+      grid.innerHTML = "";
+
+      filtered.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" />
+          <div class="card-body">
+            <div class="card-top">
+              <span>${item.source}</span>
+              <span class="sport-tag">${item.subtopic || ""}</span>
+            </div>
+            <h3 class="card-title">${item.title}</h3>
+            <p class="card-text">${item.text}</p>
+            <a class="card-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${pack.readMore}</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    setLang("uz");
+  </script>
+</body>
+</html>
