@@ -698,76 +698,79 @@ function getTeamImage(team, type) {
     return img;
 }
 
-// O'YIN KARTASI
+// 
+ 
 
+
+// O'YIN KARTASI
 function showMatchCard(m){
 
-const card=document.createElement("div");
+    const card = document.createElement("div");
+    card.className = "match-card";
 
-card.className="match-card";
+    const top = document.createElement("div");
+    top.className = "match-top";
+    top.textContent =
+        (m.type === "club" ? "🏆 KLUBLAR" : "🌍 TERMA JAMOALAR")
+        + " | " + m.date + " | " + m.time;
 
-const top=document.createElement("div");
+    const teams = document.createElement("div");
+    teams.className = "teams";
 
-top.className="match-top";
+    const home = document.createElement("div");
+    home.className = "team";
 
-top.textContent=
-(m.type==="club"?"🏆 KLUBLAR":"🌍 TERMA JAMOALAR")
-+" | "+m.date+" | "+m.time;
+    const homeImage = getTeamImage(m.home, m.type);
+    if(homeImage.src) home.append(homeImage);
 
-const teams=document.createElement("div");
+    const homeName = document.createElement("span");
+    homeName.textContent = m.home;
+    home.append(homeName);
 
-teams.className="teams";
+    const score = document.createElement("div");
+    score.className = "score";
+    score.textContent =
+        m.homeScore === null
+        ? "VS"
+        : m.homeScore + " : " + m.awayScore;
 
-const home=document.createElement("div");
+    const away = document.createElement("div");
+    away.className = "team";
 
-home.className="team";
+    const awayImage = getTeamImage(m.away, m.type);
+    if(awayImage.src) away.append(awayImage);
 
-home.textContent=m.home;
+    const awayName = document.createElement("span");
+    awayName.textContent = m.away;
+    away.append(awayName);
 
-const score=document.createElement("div");
+    teams.append(home, score, away);
 
-score.className="score";
+    const info = document.createElement("div");
+    info.className = "match-info";
+    info.textContent =
+        "📍 " + (m.stadium || "Aniqlashtirilmagan") +
+        " | 📺 " + (m.channel || "Aniqlashtirilmagan");
 
-score.textContent=
-m.homeScore===null
-?"VS"
-:m.homeScore+" : "+m.awayScore;
+    const status = document.createElement("span");
+    status.className = "status";
 
-const away=document.createElement("div");
+    status.textContent =
+        m.status === "finished"
+        ? "Yakunlangan"
+        : m.status === "live"
+        ? "Jonli o'yin"
+        : "Kutilmoqda";
 
-away.className="team";
+    if(m.status === "live"){
+        status.classList.add("live");
+    }
 
-away.textContent=m.away;
+    card.append(top, teams, info, status);
 
-teams.append(home,score,away);
-
-const info=document.createElement("div");
-
-info.className="match-info";
-
-info.textContent=
-"📍 "+m.stadium+
-" | 📺 "+m.channel+
-" | Toshkent vaqti (UTC+5)";
-
-const status=document.createElement("span");
-
-status.className="status";
-
-status.textContent=
-m.status==="finished"
-?"Yakunlangan"
-:m.status==="live"
-?"Jonli o'yin"
-:"Kutilmoqda";
-
-if(m.status==="live"){
-status.classList.add("live");
+    return card;
 }
 
-card.append(top,teams,info,status);
-
-return card;
 
 }
 
