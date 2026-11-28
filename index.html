@@ -969,7 +969,14 @@ return;
 
 const m=matches.find(x=>x.id===id);
 
-if(!m||m.status!=="upcoming")return;
+if(!m || !isPredictionOpen(m)){
+
+    alert("O'yin boshlangan! Tahmin qabul qilinmaydi.");
+
+    showPredictions();
+
+    return;
+}
 
 if(!predictions[currentUser]){
 
