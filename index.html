@@ -647,6 +647,57 @@ openTab("calendar",button);
 
 }
 
+function getTeamImage(team, type) {
+    const img = document.createElement("img");
+
+    img.className = type === "club"
+        ? "team-logo"
+        : "team-flag";
+
+    img.alt = team;
+
+    // Klublar uchun logotip manzili
+    // Terma jamoalar uchun bayroq manzili
+    const logos = {
+        "Real Madrid": "https://media.api-sports.io/football/teams/541.png",
+        "Barcelona": "https://media.api-sports.io/football/teams/529.png",
+        "Manchester City": "https://media.api-sports.io/football/teams/50.png",
+        "Manchester United": "https://media.api-sports.io/football/teams/33.png",
+        "Liverpool": "https://media.api-sports.io/football/teams/40.png",
+        "Arsenal": "https://media.api-sports.io/football/teams/42.png",
+        "PSG": "https://media.api-sports.io/football/teams/85.png",
+        "Bayern Munich": "https://media.api-sports.io/football/teams/157.png"
+    };
+
+    const flags = {
+        "Uzbekistan": "uz",
+        "O'zbekiston": "uz",
+        "Argentina": "ar",
+        "Brazil": "br",
+        "France": "fr",
+        "Germany": "de",
+        "England": "gb-eng",
+        "Spain": "es",
+        "Portugal": "pt",
+        "Italy": "it"
+    };
+
+    if (type === "club") {
+        img.src = logos[team] || "";
+    } else {
+        const code = flags[team];
+        img.src = code
+            ? "https://flagcdn.com/w80/" + code + ".png"
+            : "";
+    }
+
+    img.onerror = function() {
+        img.style.display = "none";
+    };
+
+    return img;
+}
+
 // O'YIN KARTASI
 
 function showMatchCard(m){
