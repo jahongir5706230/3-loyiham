@@ -1197,50 +1197,30 @@ tbody.append(row);
 
 <script>
 
+
 // ADMIN PANELGA KIRISH
 
-function adminLogin(){
+let isAdmin = false;
 
-const pin=document.getElementById("adminPin").value;
+function adminLogin() {
+    const pin = document.getElementById("adminPin").value;
 
-if(pin==="0904"){
+    if (pin === "0904") {
+        isAdmin = true;
 
-document.getElementById("adminPanel")
-.classList.remove("hidden");
+        document.getElementById("adminPanel")
+            .classList.remove("hidden");
 
-document.getElementById("adminButton")
-.classList.remove("hidden");
+        refreshAdmin();
 
-refreshAdmin();
+        alert("Admin panel muvaffaqiyatli ochildi!");
+    } else {
+        isAdmin = false;
 
-alert("Admin panel ochildi!");
-
-}else{
-
-alert("PIN kodi noto'g'ri!");
-
+        alert("PIN kodi noto'g'ri!");
+    }
 }
 
-}
-
-const pin=document.getElementById("adminPin").value;
-
-if(pin==="0904"){
-
-document.getElementById("adminPanel")
-.classList.remove("hidden");
-
-refreshAdmin();
-
-alert("Admin panel ochildi!");
-
-}else{
-
-alert("PIN kodi noto'g'ri!");
-
-}
-
-}
 
 // ADMIN MA'LUMOTLARINI YANGILASH
 
