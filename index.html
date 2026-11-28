@@ -831,6 +831,18 @@ alert("Xush kelibsiz, "+name+"!");
 
 }
 
+function isPredictionOpen(m) {
+    if (!m || m.status !== "upcoming") {
+        return false;
+    }
+
+    const matchTime = new Date(
+        m.date + "T" + m.time + ":00+05:00"
+    ).getTime();
+
+    return Date.now() < matchTime;
+}
+
 // BASHORATLAR RO'YXATI
 
 function showPredictions(){
