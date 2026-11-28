@@ -856,8 +856,10 @@ profile.textContent=
 " | 🏆 "+users[currentUser].points+" ochko";
 
 const available=matches.filter(m=>
-m.status==="upcoming"
+isPredictionOpen(m)
 );
+
+
 
 if(!available.length){
 
