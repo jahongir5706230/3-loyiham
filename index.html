@@ -1510,6 +1510,19 @@ alert("O'yin o'chirildi!");
 
 }
 
+// HAR 10 SONIYADA TAHMINLARNI TEKSHIRISH
+
+setInterval(function(){
+
+    if(!document.getElementById("predict")
+    .classList.contains("hidden")){
+
+        showPredictions();
+
+    }
+
+}, 10000);
+
 // SAYTNI ISHGA TUSHIRISH
 
 showHome();
